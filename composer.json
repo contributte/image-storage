@@ -1,0 +1,39 @@
+{
+	"name": "ublaboo/image-storage",
+	"type": "library",
+	"description": "Image storage for Nette framework",
+	"keywords": ["image", "nette", "storage", "crop", "resize", "upload"],
+	"homepage": "http://ublaboo.paveljanda.com/image-storage",
+	"license": ["MIT"],
+	"support": {
+		"issues": "https://github.com/ublaboo/image-storage/issues"
+	},
+	"authors": [
+		{
+			"name": "Pavel Janda",
+			"homepage": "http://paveljanda.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Ublaboo\\ImageStorage\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Ublaboo\\ImageStorage\\Tests\\": "tests"
+		}
+	},
+	"require": {
+		"nette/utils" : "~2.3.0",
+		"nette/di"    : "~2.3.0",
+		"nette/http"  : "~2.3.0",
+		"latte/latte" : "~2.3.0"
+	},
+	"require-dev": {
+		"nette/tester"      : "~1.6.1",
+		"mockery/mockery"   : "~0.9",
+		"tracy/tracy"       : "~2.3.0",
+		"nette/application" : "~2.3.0"
+	}
+}
