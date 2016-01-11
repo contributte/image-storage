@@ -106,7 +106,7 @@ class ImageStorage extends Nette\Object
 	 */
 	public function delete($arg)
 	{
-		if (is_object($arg) && get_class($arg) === 'Lib\Extensions\Images\Image') {
+		if (is_object($arg) && $arg instanceof Image) {
 			$script = ImageNameScript::fromIdentifier($arg->identifier);
 		} else {
 			$script = ImageNameScript::fromName($arg);
