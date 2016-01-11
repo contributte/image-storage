@@ -6,11 +6,11 @@
  * @package     Ublaboo
  */
 
-namespace Ublaboo\ImageStorage;
+namespace Ublaboo\ImageStorage\DI;
 
 use Nette;
 
-class ImagesExtension extends Nette\DI\CompilerExtension
+class ImageStorageExtension extends Nette\DI\CompilerExtension
 {
 
 	private $defaults = [

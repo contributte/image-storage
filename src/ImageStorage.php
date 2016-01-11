@@ -58,8 +58,14 @@ class ImageStorage extends Nette\Object
 	 */
 	private $noimage_identifier;
 
+	/**
+	 * @var int
+	 */
 	private $mask = 0775;
 
+	/**
+	 * @var array
+	 */
 	private $_image_flags = [
 		'fit' => 0,
 		'fill' => 4,
@@ -100,7 +106,7 @@ class ImageStorage extends Nette\Object
 	 */
 	public function delete($arg)
 	{
-		if (is_object($arg) && $arg instanceof Ublaboo\ImageStorage\Image) {
+		if (is_object($arg) && get_class($arg) === 'Lib\Extensions\Images\Image') {
 			$script = ImageNameScript::fromIdentifier($arg->identifier);
 		} else {
 			$script = ImageNameScript::fromName($arg);
@@ -206,7 +212,7 @@ class ImageStorage extends Nette\Object
 		 */
 		if (sizeof($args) === 1) {
 			if (!file_exists(implode('/', [$this->data_path, $identifier])) || !$identifier) {
-				return new Image($this->data_dir, $this->noimage_identifier);
+				return $this->getNoImage(TRUE);
 			}
 			return new Image($this->data_dir, $identifier);
 		}
@@ -236,8 +242,8 @@ class ImageStorage extends Nette\Object
 		 * Verify that given identifier is not empty
 		 */
 		if (!$identifier) {
-			$isNoImage = true;
-			list($script, $file) = $this->getNoImage();
+			$is_no_image = FALSE;
+			list($script, $file) = $this->getNoImage(FALSE);
 		} else {
 			/**
 			 * Create ImageNameScript and set particular sizes, flags, etc
@@ -250,8 +256,8 @@ class ImageStorage extends Nette\Object
 			 */
 			$file = implode('/', [$this->data_path, $script->original]);
 			if (!file_exists($file)) {
-				$isNoImage = true;
-				list($script, $file) = $this->getNoImage();
+				$is_no_image = TRUE;
+				list($script, $file) = $this->getNoImage(FALSE);
 			}
 		}
 
@@ -313,10 +319,32 @@ class ImageStorage extends Nette\Object
 	 * Return ImageNameScript and file for no-image image
 	 * @return array
 	 */
-	public function getNoImage()
+	public function getNoImage($return_image = FALSE)
 	{
 		$script = ImageNameScript::fromIdentifier($this->noimage_identifier);
 		$file = implode('/', [$this->data_path, $script->original]);
+
+		if (!file_exists($file)) {
+			$identifier = '_storage_no_image/8f/no_image.png';
+			$new_path = "{$this->data_path}/{$identifier}";
+
+			if (!file_exists($new_path)) {
+				$data = base64_decode(require __DIR__ . '/NoImageSource.php');
+				$_image = Nette\Utils\Image::fromString($data);
+				$_image->save($new_path, $script->quality ?: $this->quality);
+			}
+
+			if ($return_image) {
+				return new Image($this->data_dir, $identifier);
+			}
+
+			$script = ImageNameScript::fromIdentifier($identifier);
+			return [$script, $new_path];
+		}
+
+		if ($return_image) {
+			return new Image($this->data_dir, $this->noimage_identifier);
+		}
 
 		return [$script, $file];
 	}
@@ -343,7 +371,6 @@ class ImageStorage extends Nette\Object
 		/**
 		 * Define name and extension of file
 		 */
-
 		preg_match('/(.*)(\.[^\.]*)/', $name, $matches);
 
 		if (!$matches[2]) {

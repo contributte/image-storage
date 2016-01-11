@@ -187,7 +187,7 @@ class ImageNameScript extends Nette\Object
 			$this->namespace,
 			$this->prefix,
 			$params_dir,
-			"{$this->name}.{$this->extension}?_images_storage"
+			"{$this->name}.{$this->extension}?_image_storage"
 		]);
 	}
 
