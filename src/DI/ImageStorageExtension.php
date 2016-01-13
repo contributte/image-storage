@@ -20,7 +20,8 @@ class ImageStorageExtension extends Nette\DI\CompilerExtension
 		'algorithm_content'  => 'sha1',
 		'quality'            => 85,
 		'default_transform'  => 'fit',
-		'noimage_identifier' => 'noimage/03/no-image.png'
+		'noimage_identifier' => 'noimage/03/no-image.png',
+		'friendly_url'       => FALSE
 	];
 
 
@@ -39,7 +40,8 @@ class ImageStorageExtension extends Nette\DI\CompilerExtension
 				$config['algorithm_content'],
 				$config['quality'],
 				$config['default_transform'],
-				$config['noimage_identifier']
+				$config['noimage_identifier'],
+				$config['friendly_url']
 			]);
 	}
 

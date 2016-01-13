@@ -59,6 +59,12 @@ class ImageStorage extends Nette\Object
 	private $noimage_identifier;
 
 	/**
+	 * Create friendly url?
+	 * @var bool
+	 */
+	private $friendly_url;
+
+	/**
 	 * @var int
 	 */
 	private $mask = 0775;
@@ -82,7 +88,8 @@ class ImageStorage extends Nette\Object
 		$algorithm_content,
 		$quality,
 		$default_transform,
-		$noimage_identifier
+		$noimage_identifier,
+		$friendly_url
 	) {
 		$this->data_path = $data_path;
 		$this->data_dir = $data_dir;
@@ -91,6 +98,7 @@ class ImageStorage extends Nette\Object
 		$this->quality = $quality;
 		$this->default_transform = $default_transform;
 		$this->noimage_identifier = $noimage_identifier;
+		$this->friendly_url = $friendly_url;
 	}
 
 
@@ -153,7 +161,7 @@ class ImageStorage extends Nette\Object
 
 		$upload->move($path);
 
-		$image = new Image($this->data_dir, $identifier, [
+		$image = new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
 			'sha' => $checksum,
 			'name' => self::fixName($upload->getName())
 		]);
@@ -181,7 +189,7 @@ class ImageStorage extends Nette\Object
 
 		file_put_contents($path, $content, LOCK_EX);
 
-		$image = new Image($this->data_dir, $identifier, [
+		$image = new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
 			'sha' => $checksum,
 			'name' => self::fixName($name)
 		]);
@@ -195,8 +203,12 @@ class ImageStorage extends Nette\Object
 	 **************************************************************************/
 
 
-	public function fromIdentifier(array $args)
+	public function fromIdentifier($args)
 	{
+		if (!is_array($args)) {
+			$args = [$args];
+		}
+
 		/**
 		 * Define image identifier
 		 */
@@ -214,7 +226,7 @@ class ImageStorage extends Nette\Object
 			if (!file_exists(implode('/', [$this->data_path, $identifier])) || !$identifier) {
 				return $this->getNoImage(TRUE);
 			}
-			return new Image($this->data_dir, $identifier);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
 		}
 
 		/**
@@ -277,7 +289,7 @@ class ImageStorage extends Nette\Object
 				/**
 				 * Raise and exception?
 				 */
-				return new Image('#', 'Can not find image');
+				return new Image(NULL, '#', '#', 'Can not find image');
 			}
 
 			$_image = Nette\Utils\Image::fromFile($file);
@@ -306,7 +318,7 @@ class ImageStorage extends Nette\Object
 			);
 		}
 
-		return new Image($this->data_dir, $identifier, ['script' => $script]);
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, ['script' => $script]);
 	}
 
 
@@ -335,7 +347,7 @@ class ImageStorage extends Nette\Object
 			}
 
 			if ($return_image) {
-				return new Image($this->data_dir, $identifier);
+				return new Image($this->data_dir, $this->data_path, $identifier);
 			}
 
 			$script = ImageNameScript::fromIdentifier($identifier);
@@ -343,7 +355,7 @@ class ImageStorage extends Nette\Object
 		}
 
 		if ($return_image) {
-			return new Image($this->data_dir, $this->noimage_identifier);
+			return new Image($this->data_dir, $this->data_path, $this->noimage_identifier);
 		}
 
 		return [$script, $file];
@@ -388,6 +400,16 @@ class ImageStorage extends Nette\Object
 		$identifier = implode('/', [$namespace, $prefix, $name . $extension]);
 
 		return [$path, $identifier];
+	}
+
+
+	/**
+	 * Create friendly URLs?
+	 * @param boolean $friendly_url
+	 */
+	public function setFriendlyUrl($friendly_url = TRUE)
+	{
+		$this->friendly_url = $friendly_url;
 	}
 
 }

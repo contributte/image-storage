@@ -20,6 +20,12 @@ class Image extends Nette\Object
 	public $data_dir;
 
 	/**
+	 * Public data directory path
+	 * @var string
+	 */
+	public $data_path;
+
+	/**
 	 * Identifier in form:
 	 * 	namespace/sha1_file[0..1]/img_name.suffix
 	 * 
@@ -44,11 +50,18 @@ class Image extends Nette\Object
 	 */
 	private $script;
 
+	/**
+	 * @var bool
+	 */
+	private $friendly_url = FALSE;
 
-	public function __construct($data_dir, $identifier, $props = [])
+
+	public function __construct($friendly_url, $data_dir, $data_path, $identifier, $props = [])
 	{
 		$this->data_dir = $data_dir;
+		$this->data_path = $data_path;
 		$this->identifier = $identifier;
+		$this->friendly_url = (bool) $friendly_url;
 
 		foreach ($props as $prop => $value) {
 			if (property_exists($this, $prop)) {
@@ -60,7 +73,7 @@ class Image extends Nette\Object
 
 	public function getPath()
 	{
-		return $this->createLink();
+		return implode('/', [dirname($this->data_path), $this->createLink()]);
 	}
 
 
@@ -78,9 +91,17 @@ class Image extends Nette\Object
 
 	public function createLink()
 	{
-		return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
+		/**
+		 * /20x20crop10x10x10x10.exact....../img.jpg
+		 */
+		if ($this->friendly_url) {
+			return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
+		}
 
-		//return implode('/', [$this->data_dir, $this->identifier]);
+		/**
+		 * /img.20x20crop10x10x10x10.exact.......jpg
+		 */
+		return implode('/', [$this->data_dir, $this->identifier]);
 	}
 
 
