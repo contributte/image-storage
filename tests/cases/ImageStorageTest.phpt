@@ -32,14 +32,14 @@ final class ImageStorageTest extends TestCase
 			FALSE
 		);
 
-		self::recursiveRemove(__DIR__ . '/../data/images');
+		/*self::recursiveRemove(__DIR__ . '/../data/images');*/
 	}
 
 
-	public function tearDown()
+	/*public function tearDown()
 	{
 		self::recursiveRemove(__DIR__ . '/../data/images');
-	}
+	}*/
 
 
 	public static function recursiveRemove($path) {
@@ -88,7 +88,7 @@ final class ImageStorageTest extends TestCase
 	}
 
 
-	public function testUpload()
+	/*public function testUpload()
 	{
 		$files = __DIR__ . '/../data/files';
 		$tmp_image_path = $files . '/tmp.jpg';
@@ -117,7 +117,7 @@ final class ImageStorageTest extends TestCase
 
 		$this->storage->saveContent(base64_encode($this->image_content), 'img2.jpg', 'images');
 		Assert::truthy(file_exists($files . '/../images/c3/img2.2.jpg'));
-	}
+	}*/
 
 }
 
