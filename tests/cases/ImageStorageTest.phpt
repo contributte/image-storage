@@ -5,6 +5,7 @@ namespace Ublaboo\Mailing\Tests\Cases;
 use Tester\TestCase,
 	Tester\Assert,
 	Mockery,
+	Nette,
 	Ublaboo\ImageStorage\ImageStorage;
 
 require __DIR__ . '/../bootstrap.php'; 
@@ -23,14 +24,36 @@ final class ImageStorageTest extends TestCase
 		$this->storage = new ImageStorage(
 			__DIR__ . '/../data',
 			'data',
-			'sha_file',
-			'sha',
+			'sha1_file',
+			'sha1',
 			2,
 			'fit',
 			'n/aa/s.jpg',
 			FALSE
 		);
+
+		self::recursiveRemove(__DIR__ . '/../data/images');
 	}
+
+
+	public function tearDown()
+	{
+		self::recursiveRemove(__DIR__ . '/../data/images');
+	}
+
+
+	public static function recursiveRemove($path) {
+
+        $iterator = new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getRealPath());
+            } else {
+                unlink($file->getRealPath());
+            }
+        }
+    }
 
 
 	public function testDelete()
@@ -62,6 +85,38 @@ final class ImageStorageTest extends TestCase
 		foreach ($file_array as $name) {
 			Assert::falsey(file_exists($name));
 		}
+	}
+
+
+	public function testUpload()
+	{
+		$files = __DIR__ . '/../data/files';
+		$tmp_image_path = $files . '/tmp.jpg';
+		file_put_contents($tmp_image_path, base64_encode($this->image_content));
+
+		$upload = new Nette\Http\FileUpload([
+			'name' => 'img.jpg',
+			'type' => 'image/jpg',
+			'size' => '20',
+			'tmp_name' => $tmp_image_path,
+			'error' => 0
+		]);
+
+		$this->storage->saveUpload($upload, 'images');
+
+		Assert::truthy(file_exists($files . '/../images/c3/img.jpg'));
+	}
+
+
+	public function testContent()
+	{
+		$files = __DIR__ . '/../data/files';
+
+		$this->storage->saveContent(base64_encode($this->image_content), 'img2.jpg', 'images');
+		Assert::truthy(file_exists($files . '/../images/c3/img2.jpg'));
+
+		$this->storage->saveContent(base64_encode($this->image_content), 'img2.jpg', 'images');
+		Assert::truthy(file_exists($files . '/../images/c3/img2.2.jpg'));
 	}
 
 }
