@@ -171,7 +171,7 @@ class ImageStorage extends Nette\Object
 
 	private static function fixName($name)
 	{
-		return Nette\Utils\Strings::lower(Nette\Utils\Strings::toAscii($name));
+		return Nette\Utils\Strings::webalize($name, '._');
 	}
 
 
