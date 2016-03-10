@@ -347,7 +347,7 @@ class ImageStorage extends Nette\Object
 			}
 
 			if ($return_image) {
-				return new Image($this->data_dir, $this->data_path, $identifier);
+				return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
 			}
 
 			$script = ImageNameScript::fromIdentifier($identifier);
@@ -355,7 +355,7 @@ class ImageStorage extends Nette\Object
 		}
 
 		if ($return_image) {
-			return new Image($this->data_dir, $this->data_path, $this->noimage_identifier);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $this->noimage_identifier);
 		}
 
 		return [$script, $file];
