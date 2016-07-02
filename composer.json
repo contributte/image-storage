@@ -25,13 +25,13 @@
 		}
 	},
 	"require": {
-		"nette/utils" : "~2.3.0",
-		"nette/di"    : "~2.3.0",
-		"nette/http"  : "~2.3.0",
-		"latte/latte" : "~2.3.0"
+		"nette/utils" : "^2.3|^2.4",
+		"nette/di"    : "^2.3|^2.4",
+		"nette/http"  : "^2.3|^2.4",
+		"latte/latte" : "^2.3|^2.4"
 	},
 	"require-dev": {
 		"nette/tester"      : "~1.6.1",
-		"tracy/tracy"       : "~2.3.0"
+		"tracy/tracy"       : "^2.3|^2.4"
 	}
 }
