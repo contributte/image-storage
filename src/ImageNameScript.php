@@ -10,8 +10,10 @@ namespace Ublaboo\ImageStorage;
 
 use Nette;
 
-class ImageNameScript extends Nette\Object
+class ImageNameScript
 {
+
+	use Nette\SmartObject;
 
 	const PATTERN = '/__file__(\.(\d+)x(\d+)(crop(\d+)x(\d+)x(\d+)x(\d+))?\.(\w+))?(\.q(\d+))?\.([^\.]+)$/';
 

@@ -10,8 +10,10 @@ namespace Ublaboo\ImageStorage;
 
 use Nette;
 
-class ImageStorage extends Nette\Object
+class ImageStorage
 {
+
+	use Nette\SmartObject;
 
 	/**
 	 * Absolute data dir path in public directory (.../public/data by default)
