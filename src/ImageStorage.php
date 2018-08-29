@@ -331,6 +331,7 @@ class ImageStorage
 
 	/**
 	 * Return ImageNameScript and file for no-image image
+	 * @throws ImageStorageException when no-image cannot be written
 	 * @return array
 	 */
 	public function getNoImage($return_image = FALSE)
