@@ -331,6 +331,7 @@ class ImageStorage
 
 	/**
 	 * Return ImageNameScript and file for no-image image
+	 * @throws ImageStorageException when no-image cannot be written
 	 * @return array
 	 */
 	public function getNoImage($return_image = FALSE)
@@ -342,7 +343,17 @@ class ImageStorage
 			$identifier = '_storage_no_image/8f/no_image.png';
 			$new_path = "{$this->data_path}/{$identifier}";
 
+
 			if (!file_exists($new_path)) {
+
+				$dirName = dirname($identifier);
+				if (!file_exists($dirName)) {
+					mkdir($dirName, 0777, true);
+				}
+				if (!file_exists($dirName) || !is_writable($new_path)) {
+					throw new ImageStorageException('Could not create default no_image.png. ' . $dirname . ' does not exist or is not writable.');
+				}
+
 				$data = base64_decode(require __DIR__ . '/NoImageSource.php');
 				$_image = Nette\Utils\Image::fromString($data);
 				$_image->save($new_path, $script->quality ?: $this->quality);
