@@ -75,7 +75,7 @@ class Image
 
 	public function getPath()
 	{
-		return implode('/', [dirname($this->data_path), $this->createLink()]);
+		return implode('/', [$this->data_path, $this->identifier]);
 	}
 
 
