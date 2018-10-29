@@ -1,91 +1,59 @@
-<?php
+<?php declare(strict_types = 1);
 
-/**
- * @copyright   Copyright (c) 2016 ublaboo <ublaboo@paveljanda.com>
- * @author      Pavel Janda <me@paveljanda.com>
- * @package     Ublaboo
- */
+namespace Contributte\ImageStorage;
 
-namespace Ublaboo\ImageStorage;
-
-use Nette;
+use Nette\SmartObject;
 
 class ImageNameScript
 {
 
-	use Nette\SmartObject;
+	use SmartObject;
 
-	const PATTERN = '/__file__(\.(\d+)x(\d+)(crop(\d+)x(\d+)x(\d+)x(\d+))?\.(\w+))?(\.q(\d+))?\.([^\.]+)$/';
+	public const PATTERN = '/__file__(\.(\d+)x(\d+)(crop(\d+)x(\d+)x(\d+)x(\d+))?\.(\w+))?(\.q(\d+))?\.([^\.]+)$/';
 
-	/**
-	 * Identifier
-	 * @var string
-	 */
+	/** @var string **/
 	public $identifier;
 
-	/**
-	 * Original Identifier in form:
-	 * 	namespace/sha1_file[0..1]/img_name.suffix
-	 * 
-	 * @var string
-	 */
+	/** @var string **/
 	public $original;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $namespace;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $prefix;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $name;
 
-	/**
-	 * [width, height]
-	 * @var array
-	 */
+	/** @var int[] **/
 	public $size = [];
 
-	/**
-	 * @var int
-	 */
+	/** @var string */
 	public $flag;
 
-	/**
-	 * @var int
-	 */
+	/** @var int */
 	public $quality;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public $extension;
 
-	/**
-	 * @var array [$offset_left, $offset_top, $width, $height]
-	 */
+	/** @var int[] */
 	public $crop = [];
 
-
-	public function __construct($identifier)
+	public function __construct(string $identifier)
 	{
 		$this->identifier = $identifier;
 	}
 
 
-	public static function fromIdentifier($identifier)
+	public static function fromIdentifier(string $identifier): ImageNameScript
 	{
 		return self::fromName($identifier);
 	}
 
 
-	public static function fromName($name)
+	public static function fromName(string $name): ImageNameScript
 	{
 		$pattern = preg_replace('/__file__/', '([^\/]*)\/([^\/]*)\/(.*?)', self::PATTERN);
 		preg_match($pattern, $name, $matches);
@@ -109,39 +77,45 @@ class ImageNameScript
 	}
 
 
-	public function setSize($size)
+	/**
+	 * @param int[] $size
+	 */
+	public function setSize(array $size): void
 	{
 		$this->size = $size;
 	}
 
 
-	public function setcrop($crop)
+	/**
+	 * @param int[] $crop
+	 */
+	public function setCrop(array $crop): void
 	{
 		$this->crop = $crop;
 	}
 
 
-	public function setFlag($flag)
+	public function setFlag(string $flag): void
 	{
 		$this->flag = $flag;
 	}
 
 
-	public function setQuality($quality)
+	public function setQuality(int $quality): void
 	{
 		$this->quality = $quality;
 	}
 
 
-	public function getIdentifier()
+	public function getIdentifier(): string
 	{
 		$identifier = implode('/', [$this->namespace, $this->prefix, $this->name]);
 
 		if ($this->size) {
 			$identifier .= '.' . $this->size[0] . 'x' . $this->size[1];
 
-			if (sizeof($this->crop)) {
-				$identifier .= "crop{$this->crop[0]}x{$this->crop[1]}x{$this->crop[2]}x{$this->crop[3]}";
+			if (count($this->crop)) {
+				$identifier .= sprintf('crop%sx%sx%sx%s', $this->crop[0], $this->crop[1], $this->crop[2], $this->crop[3]);
 			}
 
 			$identifier .= '.' . $this->flag;
@@ -157,23 +131,23 @@ class ImageNameScript
 	}
 
 
-	public function hasCrop()
+	public function hasCrop(): bool
 	{
-		if (!sizeof($this->crop)) {
-			return FALSE;
+		if (!count($this->crop)) {
+			return false;
 		}
 
-		return TRUE;
+		return true;
 	}
 
 
-	public function toQuery()
+	public function toQuery(): string
 	{
 		if ($this->size && $this->size[0] && $this->size[1]) {
 			$params_dir = $this->size[0] . 'x' . $this->size[1];
 
-			if (sizeof($this->crop)) {
-				$params_dir .= "crop{$this->crop[0]}x{$this->crop[1]}x{$this->crop[2]}x{$this->crop[3]}";
+			if (count($this->crop)) {
+				$params_dir .= sprintf('crop%sx%sx%sx%s', $this->crop[0], $this->crop[1], $this->crop[2], $this->crop[3]);
 			}
 
 			$params_dir .= '.' . $this->flag;
@@ -189,7 +163,7 @@ class ImageNameScript
 			$this->namespace,
 			$this->prefix,
 			$params_dir,
-			"{$this->name}.{$this->extension}?_image_storage"
+			sprintf('%s.%s?_image_storage', $this->name, $this->extension),
 		]);
 	}
 
