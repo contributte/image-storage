@@ -1,6 +1,10 @@
-<?php
+<?php declare(strict_types = 1);
 
-require __DIR__ . '/../vendor/autoload.php';
+use Ninjify\Nunjuck\Environment;
 
-Tester\Environment::setup();
-date_default_timezone_set('Europe/Prague');
+if (@! include __DIR__ . '/../vendor/autoload.php') {
+	echo 'Install Nette Tester using `composer update --dev`';
+	exit(1);
+}
+// Configure environment
+Environment::setup(__DIR__);

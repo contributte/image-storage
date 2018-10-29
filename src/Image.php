@@ -1,69 +1,45 @@
-<?php
+<?php declare(strict_types = 1);
 
-/**
- * @copyright   Copyright (c) 2016 ublaboo <ublaboo@paveljanda.com>
- * @author      Pavel Janda <me@paveljanda.com>
- * @package     Ublaboo
- */
+namespace Contributte\ImageStorage;
 
-namespace Ublaboo\ImageStorage;
-
-use Nette;
+use Nette\SmartObject;
+use Traversable;
 
 class Image
 {
 
-	use Nette\SmartObject;
+	use SmartObject;
 
-	/**
-	 * Public data directory
-	 * @var string
-	 */
+	/** @var string */
 	public $data_dir;
 
-	/**
-	 * Public data directory path
-	 * @var string
-	 */
+	/** @var string */
 	public $data_path;
 
-	/**
-	 * Identifier in form:
-	 * 	namespace/sha1_file[0..1]/img_name.suffix
-	 * 
-	 * @var string
-	 */
+	/** @var string */
 	public $identifier;
 
-	/**
-	 * sha1_file checksum
-	 * @var string
-	 */
+	/** @var string */
 	public $sha;
 
-	/**
-	 * Original file name
-	 * @var string
-	 */
+	/** @var string */
 	public $name;
 
-	/**
-	 * @var ImageNameScript
-	 */
+	/** @var ImageNameScript */
 	private $script;
 
-	/**
-	 * @var bool
-	 */
-	private $friendly_url = FALSE;
+	/** @var bool */
+	private $friendly_url = false;
 
-
-	public function __construct($friendly_url, $data_dir, $data_path, $identifier, $props = [])
+	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, ?Traversable $props = null)
 	{
 		$this->data_dir = $data_dir;
 		$this->data_path = $data_path;
 		$this->identifier = $identifier;
-		$this->friendly_url = (bool) $friendly_url;
+		$this->friendly_url = $friendly_url;
+
+		if ($props === null)
+			$props = [];
 
 		foreach ($props as $prop => $value) {
 			if (property_exists($this, $prop)) {
@@ -73,41 +49,34 @@ class Image
 	}
 
 
-	public function getPath()
+	public function getPath(): Traversable
 	{
 		return implode('/', [dirname($this->data_path), $this->createLink()]);
 	}
 
 
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->identifier;
 	}
 
 
-	public function getQuery()
+	public function getQuery(): string
 	{
 		return $this->script->toQuery();
 	}
 
 
-	public function createLink()
+	public function createLink(): Traversable
 	{
-		/**
-		 * /20x20crop10x10x10x10.exact....../img.jpg
-		 */
 		if ($this->friendly_url) {
 			return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
 		}
-
-		/**
-		 * /img.20x20crop10x10x10x10.exact.......jpg
-		 */
 		return implode('/', [$this->data_dir, $this->identifier]);
 	}
 
 
-	public function getScript()
+	public function getScript(): ImageNameScript
 	{
 		return $this->script ?: ImageNameScript::fromIdentifier($this->identifier);
 	}

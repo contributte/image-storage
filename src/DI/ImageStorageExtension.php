@@ -1,18 +1,14 @@
-<?php
+<?php declare(strict_types = 1);
 
-/**
- * @copyright   Copyright (c) 2016 ublaboo <ublaboo@paveljanda.com>
- * @author      Pavel Janda <me@paveljanda.com>
- * @package     Ublaboo
- */
+namespace Contributte\ImageStorage\DI;
 
-namespace Ublaboo\ImageStorage\DI;
+use Nette\DI\CompilerExtension;
+use Nette\DI\Helpers;
 
-use Nette;
-
-class ImageStorageExtension extends Nette\DI\CompilerExtension
+class ImageStorageExtension extends CompilerExtension
 {
 
+	/** @var mixed[] */
 	private $defaults = [
 		'data_path'          => '%wwwDir%/../public/data',
 		'data_dir'           => 'data',
@@ -21,11 +17,10 @@ class ImageStorageExtension extends Nette\DI\CompilerExtension
 		'quality'            => 85,
 		'default_transform'  => 'fit',
 		'noimage_identifier' => 'noimage/03/no-image.png',
-		'friendly_url'       => FALSE
+		'friendly_url'       => false,
 	];
 
-
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$config = $this->_getConfig();
 
@@ -41,27 +36,30 @@ class ImageStorageExtension extends Nette\DI\CompilerExtension
 				$config['quality'],
 				$config['default_transform'],
 				$config['noimage_identifier'],
-				$config['friendly_url']
+				$config['friendly_url'],
 			]);
 	}
 
 
-	public function beforeCompile()
+	public function beforeCompile(): void
 	{
 		$config = $this->_getConfig();
 
 		$builder = $this->getContainerBuilder();
 
 		$builder->getDefinition('nette.latteFactory')
-			->addSetup('Ublaboo\ImageStorage\Macros\Macros::install(?->getCompiler())', array('@self'));
+			->addSetup('Contributte\ImageStorage\Macros\Macros::install(?->getCompiler())', ['@self']);
 	}
 
 
+	/**
+	 * @return mixed
+	 */
 	private function _getConfig()
 	{
 		$config = $this->validateConfig($this->defaults, $this->config);
 
-		$config['data_path'] = Nette\DI\Helpers::expand($config['data_path'], $this->getContainerBuilder()->parameters);
+		$config['data_path'] = Helpers::expand($config['data_path'], $this->getContainerBuilder()->parameters);
 
 		return $config;
 	}

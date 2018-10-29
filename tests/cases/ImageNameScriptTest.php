@@ -1,18 +1,17 @@
-<?php
+<?php declare(strict_types = 1);
 
-namespace Ublaboo\Mailing\Tests\Cases;
+namespace Tests\Cases;
 
-use Tester\TestCase,
-	Tester\Assert,
-	Mockery,
-	Ublaboo\ImageStorage\ImageNameScript;
+use Contributte\ImageStorage\ImageNameScript;
+use Ninjify\Nunjuck\TestCase\BaseTestCase;
+use Tester\Assert;
 
-require __DIR__ . '/../bootstrap.php'; 
+require __DIR__ . '/../bootstrap.php';
 
-final class ImageNameScriptTest extends TestCase
+final class ImageNameScriptTest extends BaseTestCase
 {
 
-	public function testFromName()
+	public function testFromName(): void
 	{
 		$s = ImageNameScript::fromName('/data/images/ed/kitty.100x200.fill.q100.jpg');
 
@@ -30,7 +29,7 @@ final class ImageNameScriptTest extends TestCase
 	}
 
 
-	public function testFromIdentifier()
+	public function testFromIdentifier(): void
 	{
 		$s = ImageNameScript::fromIdentifier('images/ed/kitty.jpg');
 
@@ -45,5 +44,5 @@ final class ImageNameScriptTest extends TestCase
 }
 
 
-$test_case = new ImageNameScriptTest;
+$test_case = new ImageNameScriptTest();
 $test_case->run();
