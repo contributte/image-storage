@@ -50,7 +50,7 @@ $ composer require contributte/image-storage
         <a href="https://github.com/paveljanda">Pavel Janda</a>
       </td>
     </tr>
-  <tbody>
+  </tbody>
 </table>
 
 -----
