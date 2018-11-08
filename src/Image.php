@@ -38,6 +38,9 @@ class Image
 		$this->identifier = $identifier;
 		$this->friendly_url = $friendly_url;
 
+		if (stripos($this->identifier, '/') === 0)
+			$this->identifier = substr($this->identifier, 1);
+
 		if ($props === null)
 			$props = [];
 
@@ -48,33 +51,28 @@ class Image
 		}
 	}
 
-
-	public function getPath(): Traversable
+	public function getPath(): string
 	{
-		return implode('/', [dirname($this->data_path), $this->createLink()]);
+		return implode('/', [$this->data_path, $this->identifier]);
 	}
-
 
 	public function __toString(): string
 	{
 		return $this->identifier;
 	}
 
-
 	public function getQuery(): string
 	{
 		return $this->script->toQuery();
 	}
 
-
-	public function createLink(): Traversable
+	public function createLink(): string
 	{
 		if ($this->friendly_url) {
 			return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
 		}
 		return implode('/', [$this->data_dir, $this->identifier]);
 	}
-
 
 	public function getScript(): ImageNameScript
 	{
