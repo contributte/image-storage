@@ -306,7 +306,7 @@ class ImageStorage
 		$extension = $matches[2];
 
 		while (file_exists($path = $dir . '/' . $name . $extension)) {
-			$name = (!isset($i) && ($i = 2)) ? $name . '.' . $i : substr($name, 0, -(2 + floor(log($i - 1, 10)))) . '.' . $i;
+			$name = (!isset($i) && ($i = 2)) ? $name . '.' . $i : substr($name, 0, -(2 + (int) floor(log($i - 1, 10)))) . '.' . $i;
 			$i++;
 		}
 

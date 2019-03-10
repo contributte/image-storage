@@ -3,7 +3,6 @@
 namespace Contributte\ImageStorage;
 
 use Nette\SmartObject;
-use Traversable;
 
 class Image
 {
@@ -31,7 +30,10 @@ class Image
 	/** @var bool */
 	private $friendly_url = false;
 
-	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, ?Traversable $props = null)
+	/**
+	 * @param mixed[] $props
+	 */
+	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, array $props = [])
 	{
 		$this->data_dir = $data_dir;
 		$this->data_path = $data_path;
@@ -40,9 +42,6 @@ class Image
 
 		if (stripos($this->identifier, '/') === 0)
 			$this->identifier = substr($this->identifier, 1);
-
-		if ($props === null)
-			$props = [];
 
 		foreach ($props as $prop => $value) {
 			if (property_exists($this, $prop)) {
