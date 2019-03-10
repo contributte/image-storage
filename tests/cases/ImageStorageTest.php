@@ -3,6 +3,8 @@
 namespace Tests\Cases;
 
 use Contributte\ImageStorage\ImageStorage;
+use Exception;
+use Nette\Http\FileUpload;
 use Nette\Utils\Image;
 use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use RecursiveDirectoryIterator;
@@ -82,6 +84,36 @@ final class ImageStorageTest extends BaseTestCase
 	}
 
 
+	public function testUpload(): void
+	{
+		$files = __DIR__ . '/../data/files';
+		$tempImagePath = $files . '/tmp.jpg';
+
+		$imageContent = Image::fromBlank(1, 1)->toString();
+
+		$this->saveTempImage($tempImagePath, $imageContent);
+
+		$upload = new FileUpload([
+			'name' => 'upload.jpg',
+			'type' => 'image/jpg',
+			'size' => '20',
+			'tmp_name' => $tempImagePath,
+			'error' => 0,
+		]);
+
+		$this->storage->saveUpload($upload, 'images');
+
+		$prefix = $this->getPrefixFromContent($imageContent);
+
+		$savedImage = sprintf(
+			'%s/../images/%s/upload.jpg',
+			$files,
+			$prefix
+		);
+		Assert::truthy(file_exists($savedImage));
+	}
+
+
 	public function testSaveContent(): void
 	{
 		$imageFileName = 'content.jpg';
@@ -112,6 +144,19 @@ final class ImageStorageTest extends BaseTestCase
 	private function getPrefixFromContent(string $imageContent): string
 	{
 		return substr(sha1($imageContent), 0, 2);
+	}
+
+
+	/**
+	 * @throws Exception
+	 */
+	private function saveTempImage(string $path, string $content): void
+	{
+		$result = file_put_contents($path, $content);
+
+		if ($result === false) {
+			throw new Exception('Unable to save temporary test image!');
+		}
 	}
 
 }
