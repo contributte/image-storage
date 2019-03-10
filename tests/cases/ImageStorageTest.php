@@ -3,6 +3,7 @@
 namespace Tests\Cases;
 
 use Contributte\ImageStorage\ImageStorage;
+use Nette\Utils\Image;
 use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -31,15 +32,19 @@ final class ImageStorageTest extends BaseTestCase
 	}
 
 
-	public static function recursiveRemove(string $path): void
+	public function tearDown(): void
 	{
-		$iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-		$files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
-		foreach ($files as $file) {
-			if ($file->isDir()) {
-				rmdir($file->getRealPath());
-			} else {
-				unlink($file->getRealPath());
+		$path = __DIR__ . '/../data/images';
+
+		if (file_exists($path)) {
+			$iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+			$files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+			foreach ($files as $file) {
+				if ($file->isDir()) {
+					rmdir($file->getRealPath());
+				} else {
+					unlink($file->getRealPath());
+				}
 			}
 		}
 	}
@@ -74,6 +79,39 @@ final class ImageStorageTest extends BaseTestCase
 		foreach ($file_array as $name) {
 			Assert::falsey(file_exists($name));
 		}
+	}
+
+
+	public function testSaveContent(): void
+	{
+		$imageFileName = 'content.jpg';
+		$files = __DIR__ . '/../data/files';
+
+		$imageContent = Image::fromBlank(1, 1)->toString();
+
+		$prefix = $this->getPrefixFromContent($imageContent);
+
+		$this->storage->saveContent($imageContent, $imageFileName, 'images');
+		$savedImage = sprintf(
+			'%s/../images/%s/content.jpg',
+			$files,
+			$prefix
+		);
+		Assert::truthy(file_exists($savedImage));
+
+		$this->storage->saveContent($imageContent, $imageFileName, 'images');
+		$savedImageCopy = sprintf(
+			'%s/../images/%s/content.2.jpg',
+			$files,
+			$prefix
+		);
+		Assert::truthy(file_exists($savedImageCopy));
+	}
+
+
+	private function getPrefixFromContent(string $imageContent): string
+	{
+		return substr(sha1($imageContent), 0, 2);
 	}
 
 }
