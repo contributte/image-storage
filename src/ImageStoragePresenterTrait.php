@@ -4,6 +4,8 @@ namespace Contributte\ImageStorage;
 
 use Nette\Application\UI\ITemplate;
 
+//phpcs:disable SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix
+
 trait ImageStoragePresenterTrait
 {
 
@@ -25,3 +27,5 @@ trait ImageStoragePresenterTrait
 	}
 
 }
+
+// phpcs:enable
