@@ -78,11 +78,9 @@ class ImageStorage
 	 */
 	public function delete($arg): void
 	{
-		if (is_object($arg) && $arg instanceof Image) {
-			$script = ImageNameScript::fromIdentifier($arg->identifier);
-		} else {
-			$script = ImageNameScript::fromName($arg);
-		}
+		$script = is_object($arg) && $arg instanceof Image
+			? ImageNameScript::fromIdentifier($arg->identifier)
+			: ImageNameScript::fromName($arg);
 
 		$pattern = preg_replace('/__file__/', $script->name, ImageNameScript::PATTERN);
 		$dir = implode('/', [$this->data_path, $script->namespace, $script->prefix]);
