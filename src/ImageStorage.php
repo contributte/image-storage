@@ -23,10 +23,10 @@ class ImageStorage
 	/** @var string */
 	private $data_dir;
 
-	/** @var string */
+	/** @var callable(string): string */
 	private $algorithm_file;
 
-	/** @var string */
+	/** @var callable(string): string */
 	private $algorithm_content;
 
 	/** @var int */
@@ -53,11 +53,15 @@ class ImageStorage
 		'shrink_only' => 1,
 	];
 
+	/**
+	 * @param callable(string): string $algorithm_file
+	 * @param callable(string): string $algorithm_content
+	 */
 	public function __construct(
 		string $data_path,
 		string $data_dir,
-		string $algorithm_file,
-		string $algorithm_content,
+		callable $algorithm_file,
+		callable $algorithm_content,
 		int $quality,
 		string $default_transform,
 		string $noimage_identifier,
@@ -78,7 +82,7 @@ class ImageStorage
 	 * @param mixed $arg
 	 * @param bool $onlyChangedImages
 	 */
-	public function delete($arg, $onlyChangedImages = false): void
+	public function delete($arg, bool $onlyChangedImages = false): void
 	{
 		$script = is_object($arg) && $arg instanceof Image
 			? ImageNameScript::fromIdentifier($arg->identifier)
@@ -93,11 +97,13 @@ class ImageStorage
 		}
 
 		foreach (new DirectoryIterator($dir) as $file_info) {
-			if (preg_match($pattern, $file_info->getFilename())
-				&& (!$onlyChangedImages || ($onlyChangedImages && $origFile !== $file_info->getFilename()))
+			if (!preg_match($pattern, $file_info->getFilename())
+		        || !(!$onlyChangedImages || ($onlyChangedImages && $origFile !== $file_info->getFilename()))
 			) {
-				unlink($file_info->getPathname());
+				continue;
 			}
+
+			unlink($file_info->getPathname());
 		}
 	}
 
@@ -191,7 +197,7 @@ class ImageStorage
 		$quality = $args[3] ?? $this->quality;
 
 		if (!$identifier) {
-			$is_no_image = false;
+			$isNoImage = false;
 			[$script, $file] = $this->getNoImage(false);
 		} else {
 			$script = ImageNameScript::fromIdentifier($identifier);
@@ -199,7 +205,7 @@ class ImageStorage
 			$file = implode('/', [$this->data_path, $script->original]);
 
 			if (!file_exists($file)) {
-				$is_no_image = true;
+				$isNoImage = true;
 				[$script, $file] = $this->getNoImage(false);
 			}
 		}
@@ -250,8 +256,9 @@ class ImageStorage
 	}
 
 	/**
-	 * @throws ImageStorageException
 	 * @return Image|mixed[]
+	 * @phpstan-return Image|array{ImageNameScript, string}
+	 * @throws ImageStorageException
 	 */
 	public function getNoImage(bool $return_image = false)
 	{
@@ -274,6 +281,7 @@ class ImageStorage
 				}
 
 				$data = base64_decode(require __DIR__ . '/NoImageSource.php');
+				assert($data);
 				$_image = NetteImage::fromString($data);
 				$_image->save($new_path, $script->quality ?: $this->quality);
 			}

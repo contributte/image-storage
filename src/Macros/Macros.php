@@ -7,12 +7,12 @@ use Latte\Compiler;
 use Latte\MacroNode;
 use Latte\PhpWriter;
 
-class Macros extends Latte\Macros\MacroSet
+final class Macros extends Latte\Macros\MacroSet
 {
 
 	public static function install(Compiler $compiler): Macros
 	{
-		$set = new static($compiler);
+		$set = new self($compiler);
 
 		$set->addMacro('img', [$set, 'tagImg'], null, [$set, 'attrImg']);
 		$set->addMacro('imgAbs', [$set, 'tagImgAbs'], null, [$set, 'attrImgAbs']);

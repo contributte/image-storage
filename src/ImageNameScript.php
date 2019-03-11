@@ -58,7 +58,7 @@ class ImageNameScript
 		$pattern = preg_replace('/__file__/', '([^\/]*)\/([^\/]*)\/(.*?)', self::PATTERN);
 		preg_match($pattern, $name, $matches);
 
-		$script = new static($matches[0]);
+		$script = new self($matches[0]);
 
 		$script->original  = $matches[1] . '/' . $matches[2] . '/' . $matches[3] . '.' . $matches[15];
 		$script->namespace = $matches[1];
@@ -151,16 +151,16 @@ class ImageNameScript
 			if ($this->quality) {
 				$params_dir .= '.q' . $this->quality;
 			}
-		} else {
-			return $this->original;
+
+			return implode('/', [
+				$this->namespace,
+				$this->prefix,
+				$params_dir,
+				sprintf('%s.%s?_image_storage', $this->name, $this->extension),
+			]);
 		}
 
-		return implode('/', [
-			$this->namespace,
-			$this->prefix,
-			$params_dir,
-			sprintf('%s.%s?_image_storage', $this->name, $this->extension),
-		]);
+		return $this->original;
 	}
 
 }
