@@ -2,6 +2,7 @@
 
 namespace Contributte\ImageStorage;
 
+use InvalidArgumentException;
 use Nette\SmartObject;
 
 class Image
@@ -24,14 +25,14 @@ class Image
 	/** @var string */
 	public $name;
 
-	/** @var ImageNameScript */
+	/** @var ImageNameScript|null */
 	private $script;
 
 	/** @var bool */
 	private $friendly_url = false;
 
 	/**
-	 * @param mixed[] $props
+	 * @param bool[]|string[]|ImageNameScript[]|null[] $props
 	 */
 	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, array $props = [])
 	{
@@ -45,9 +46,11 @@ class Image
 		}
 
 		foreach ($props as $prop => $value) {
-			if (property_exists($this, $prop)) {
-				$this->$prop = $value;
+			if (!property_exists($this, $prop)) {
+				continue;
 			}
+
+			$this->$prop = $value;
 		}
 	}
 
@@ -63,6 +66,14 @@ class Image
 
 	public function getQuery(): string
 	{
+		if ($this->script === null) {
+			throw new InvalidArgumentException(sprintf(
+				'%s: Property $script is not set and called %s. Please set $script',
+				static::class,
+				__METHOD__
+			));
+		}
+
 		return $this->script->toQuery();
 	}
 

@@ -8,7 +8,7 @@
         <properties>
             <property name="rootNamespaces" type="array" value="
                 src=>Contributte\ImageStorage,
-				tests/cases=>Tests\Cases
+                tests/cases=>Tests\Cases
             "/>
         </properties>
     </rule>

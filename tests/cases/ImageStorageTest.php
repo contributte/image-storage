@@ -38,16 +38,18 @@ final class ImageStorageTest extends BaseTestCase
 	{
 		$path = __DIR__ . '/../data/images';
 
-		if (file_exists($path)) {
-			$iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-			$files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+		if (!file_exists($path)) {
+			return;
+		}
 
-			foreach ($files as $file) {
-				if ($file->isDir()) {
-					rmdir($file->getRealPath());
-				} else {
-					unlink($file->getRealPath());
-				}
+		$iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
+		$files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
+		foreach ($files as $file) {
+			if ($file->isDir()) {
+				rmdir($file->getRealPath());
+			} else {
+				unlink($file->getRealPath());
 			}
 		}
 	}
