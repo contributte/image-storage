@@ -71,6 +71,7 @@ class Image
 		if ($this->friendly_url) {
 			return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
 		}
+
 		return implode('/', [$this->data_dir, $this->identifier]);
 	}
 
