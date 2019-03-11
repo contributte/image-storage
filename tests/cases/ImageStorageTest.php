@@ -41,6 +41,7 @@ final class ImageStorageTest extends BaseTestCase
 		if (file_exists($path)) {
 			$iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
 			$files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
+
 			foreach ($files as $file) {
 				if ($file->isDir()) {
 					rmdir($file->getRealPath());
