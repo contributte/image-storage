@@ -133,11 +133,7 @@ class ImageNameScript
 
 	public function hasCrop(): bool
 	{
-		if (!count($this->crop)) {
-			return false;
-		}
-
-		return true;
+		return count($this->crop) > 0;
 	}
 
 
