@@ -168,6 +168,7 @@ class ImageStorage
 			if (!file_exists(implode('/', [$this->data_path, $identifier])) || !$identifier) {
 				return $this->getNoImage(true);
 			}
+
 			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
 		}
 
@@ -190,10 +191,10 @@ class ImageStorage
 			$is_no_image = false;
 			[$script, $file] = $this->getNoImage(false);
 		} else {
-
 			$script = ImageNameScript::fromIdentifier($identifier);
 
 			$file = implode('/', [$this->data_path, $script->original]);
+
 			if (!file_exists($file)) {
 				$is_no_image = true;
 				[$script, $file] = $this->getNoImage(false);
@@ -208,7 +209,6 @@ class ImageStorage
 		$identifier = $script->getIdentifier();
 
 		if (!file_exists(implode('/', [$this->data_path, $identifier]))) {
-
 			if (!file_exists($file)) {
 				return new Image(false, '#', '#', 'Can not find image');
 			}
@@ -255,11 +255,12 @@ class ImageStorage
 			$new_path = sprintf('%s/%s', $this->data_path, $identifier);
 
 			if (!file_exists($new_path)) {
-
 				$dirName = dirname($identifier);
+
 				if (!file_exists($dirName)) {
 					mkdir($dirName, 0777, true);
 				}
+
 				if (!file_exists($dirName) || !is_writable($new_path)) {
 					throw new ImageStorageException('Could not create default no_image.png. ' . $dirName . ' does not exist or is not writable.');
 				}
@@ -274,6 +275,7 @@ class ImageStorage
 			}
 
 			$script = ImageNameScript::fromIdentifier($identifier);
+
 			return [$script, $new_path];
 		}
 
