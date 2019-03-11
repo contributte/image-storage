@@ -40,8 +40,9 @@ class Image
 		$this->identifier = $identifier;
 		$this->friendly_url = $friendly_url;
 
-		if (stripos($this->identifier, '/') === 0)
+		if (stripos($this->identifier, '/') === 0) {
 			$this->identifier = substr($this->identifier, 1);
+		}
 
 		foreach ($props as $prop => $value) {
 			if (property_exists($this, $prop)) {
