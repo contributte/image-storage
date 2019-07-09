@@ -23,10 +23,10 @@ $ composer require contributte/image-storage
 ```
 ## Versions
 
-| State   | Version    | Branch   | PHP     |
-|---------|------------|----------|---------|
-| dev     | dev-master | `master` | `>=7.1` |
-| stable  | `^1.1.13`  | `master` | `>=7.1` |
+| State       | Version | Branch   | PHP      |
+|-------------|---------|----------|----------|
+| dev         | `^1.2`  | `master` | `>= 7.1` |
+| stable      | `^1.1`  | `master` | `>= 7.1` |
 
 ## Overview
 
