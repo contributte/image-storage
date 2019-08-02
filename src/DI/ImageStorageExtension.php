@@ -2,66 +2,49 @@
 
 namespace Contributte\ImageStorage\DI;
 
+use Contributte\ImageStorage\ImageStorage;
+use Nette;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Helpers;
+use Nette\Schema\Expect;
+use Nette\Schema\Schema;
 
 class ImageStorageExtension extends CompilerExtension
 {
 
-	/** @var mixed[] */
-	private $defaults = [
-		'data_path'          => '%wwwDir%/../public/data',
-		'data_dir'           => 'data',
-		'algorithm_file'     => 'sha1_file',
-		'algorithm_content'  => 'sha1',
-		'quality'            => 85,
-		'default_transform'  => 'fit',
-		'noimage_identifier' => 'noimage/03/no-image.png',
-		'friendly_url'       => false,
-	];
+	public function getConfigSchema(): Schema
+	{
+		return Expect::structure([
+			'data_path' => Expect::string()->required(),
+			'data_dir' => Expect::string()->required(),
+			'algorithm_file' => Expect::string('sha1_file'),
+			'algorithm_content' => Expect::string('sha1'),
+			'quality' => Expect::int(85),
+			'default_transform' => Expect::string('fit'),
+			'noimage_identifier' => Expect::string('noimage/03/no-image.png'),
+			'friendly_url' => Expect::bool(false),
+		]);
+	}
 
 	public function loadConfiguration(): void
 	{
-		$config = $this->_getConfig();
-
 		$builder = $this->getContainerBuilder();
-
+		$config = (array) $this->config;
 		$builder->addDefinition($this->prefix('storage'))
-			->setClass('Ublaboo\ImageStorage\ImageStorage')
-			->setArguments([
-				$config['data_path'],
-				$config['data_dir'],
-				$config['algorithm_file'],
-				$config['algorithm_content'],
-				$config['quality'],
-				$config['default_transform'],
-				$config['noimage_identifier'],
-				$config['friendly_url'],
-			]);
+			->setType(ImageStorage::class)
+			->setFactory(ImageStorage::class)
+			->setArguments($config);
 	}
 
 
 	public function beforeCompile(): void
 	{
-		$config = $this->_getConfig();
-
 		$builder = $this->getContainerBuilder();
 
-		$builder->getDefinition('nette.latteFactory')
+		/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
+		$latteFactory = $builder->getDefinition('latte.latteFactory');
+		assert($latteFactory instanceof Nette\DI\Definitions\FactoryDefinition);
+		$latteFactory->getResultDefinition()
 			->addSetup('Contributte\ImageStorage\Macros\Macros::install(?->getCompiler())', ['@self']);
-	}
-
-
-	/**
-	 * @return mixed
-	 */
-	private function _getConfig()
-	{
-		$config = $this->validateConfig($this->defaults, $this->config);
-
-		$config['data_path'] = Helpers::expand($config['data_path'], $this->getContainerBuilder()->parameters);
-
-		return $config;
 	}
 
 }
