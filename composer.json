@@ -32,8 +32,8 @@
 		"latte/latte": "^2.5"
 	},
 	"require-dev": {
-		"ninjify/qa": "^0.9.0",
-		"ninjify/nunjuck": "^0.2.0",
+		"ninjify/qa": "^0.10",
+		"ninjify/nunjuck": "^0.3",
 		"tracy/tracy": "^2.6"
 	},
 	"minimum-stability": "dev",
