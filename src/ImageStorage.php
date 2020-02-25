@@ -247,8 +247,9 @@ class ImageStorage
 
 	/**
 	 * @throws ImageStorageException
+	 * @return Image|mixed[]
 	 */
-	public function getNoImage(bool $return_image = false): Image
+	public function getNoImage(bool $return_image = false)
 	{
 		$script = ImageNameScript::fromIdentifier($this->noimage_identifier);
 		$file = implode('/', [$this->data_path, $script->original]);
