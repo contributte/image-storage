@@ -253,13 +253,13 @@ class ImageStorage
 			$new_path = sprintf('%s/%s', $this->data_path, $identifier);
 
 			if (!file_exists($new_path)) {
-				$dirName = dirname($identifier);
+				$dirName = dirname($new_path);
 
 				if (!file_exists($dirName)) {
 					mkdir($dirName, 0777, true);
 				}
 
-				if (!file_exists($dirName) || !is_writable($new_path)) {
+				if (!file_exists($dirName) || !is_writable($dirName)) {
 					throw new ImageStorageException('Could not create default no_image.png. ' . $dirName . ' does not exist or is not writable.');
 				}
 
