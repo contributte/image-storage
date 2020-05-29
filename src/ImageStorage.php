@@ -10,6 +10,7 @@ use Nette\Http\FileUpload;
 use Nette\SmartObject;
 use Nette\Utils\Image as NetteImage;
 use Nette\Utils\Strings;
+use Nette\Utils\UnknownImageFileException;
 
 class ImageStorage
 {
@@ -211,7 +212,11 @@ class ImageStorage
 				return new Image(false, '#', '#', 'Can not find image');
 			}
 
-			$_image = NetteImage::fromFile($file);
+			try {
+				$_image = NetteImage::fromFile($file);
+			} catch (UnknownImageFileException $e) {
+				return new Image(false, '#', '#', 'Unknown type of file');
+			}
 
 			if ($script->hasCrop() && !$isNoImage) {
 				call_user_func_array([$_image, 'crop'], $script->crop);
