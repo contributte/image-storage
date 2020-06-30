@@ -2,6 +2,8 @@ language: php
 php:
 - 7.1
 - 7.2
+- 7.3
+- 7.4
 
 before_install:
 # turn off XDebug
@@ -18,12 +20,12 @@ script:
 jobs:
   include:
   - stage: Quality Assurance
-    php: 7.1
+    php: 7.4
     script:
     - composer run-script qa
 
   - stage: Test Coverage
-    php: 7.1
+    php: 7.4
     script:
     - composer run-script coverage
     after_script:
@@ -31,7 +33,7 @@ jobs:
     - php coveralls.phar --verbose --config tests/.coveralls.yml
 
   - stage: Phpstan
-    php: 7.1
+    php: 7.4
     script:
     - composer run-script phpstan-install
     - composer run-script phpstan
