@@ -76,8 +76,9 @@ class ImageStorage
 
 	/**
 	 * @param mixed $arg
+	 * @param bool $onlyChangedImages
 	 */
-	public function delete($arg): void
+	public function delete($arg, $onlyChangedImages = false): void
 	{
 		$script = is_object($arg) && $arg instanceof Image
 			? ImageNameScript::fromIdentifier($arg->identifier)
@@ -85,13 +86,16 @@ class ImageStorage
 
 		$pattern = preg_replace('/__file__/', $script->name, ImageNameScript::PATTERN);
 		$dir = implode('/', [$this->data_path, $script->namespace, $script->prefix]);
+		$origFile = $script->name . '.' . $script->extension;
 
 		if (!file_exists($dir)) {
 			return;
 		}
 
 		foreach (new DirectoryIterator($dir) as $file_info) {
-			if (preg_match($pattern, $file_info->getFilename())) {
+			if (preg_match($pattern, $file_info->getFilename())
+				&& (!$onlyChangedImages || ($onlyChangedImages  && $origFile !== $file_info->getFilename()))
+			) {
 				unlink($file_info->getPathname());
 			}
 		}
