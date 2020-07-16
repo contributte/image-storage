@@ -94,7 +94,7 @@ class ImageStorage
 
 		foreach (new DirectoryIterator($dir) as $file_info) {
 			if (preg_match($pattern, $file_info->getFilename())
-				&& (!$onlyChangedImages || ($onlyChangedImages  && $origFile !== $file_info->getFilename()))
+				&& (!$onlyChangedImages || ($onlyChangedImages && $origFile !== $file_info->getFilename()))
 			) {
 				unlink($file_info->getPathname());
 			}
