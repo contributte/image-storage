@@ -127,6 +127,21 @@ $img_object = $imageStorage->fromIdentifier('images/ed/kitty.jpg');
 $this->imageStorage->delete($img_object);
 ```
 
+If you only want to delete changed images, set the second parameter to TRUE:
+```php
+<?php declare(strict_types = 1);
+
+// from string
+$img = 'images/ed/kitty.jpg';
+$this->imageStorage->delete($img, true);
+
+// OR from object
+$img_object = $imageStorage->fromIdentifier('images/ed/kitty.jpg');
+$this->imageStorage->delete($img_object, true);
+```
+The original images remain saved.
+
+
 ## Friendly URL
 
 The transformed image name does not look to much friendly (eg `/avatars/kitty.200x200.fit.jpg`). 
