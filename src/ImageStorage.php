@@ -80,7 +80,6 @@ class ImageStorage
 
 	/**
 	 * @param mixed $arg
-	 * @param bool $onlyChangedImages
 	 */
 	public function delete($arg, bool $onlyChangedImages = false): void
 	{
@@ -97,8 +96,10 @@ class ImageStorage
 		}
 
 		foreach (new DirectoryIterator($dir) as $file_info) {
-			if (!preg_match($pattern, $file_info->getFilename())
-		        || !(!$onlyChangedImages || ($onlyChangedImages && $origFile !== $file_info->getFilename()))
+			if (
+				!preg_match($pattern, $file_info->getFilename())
+				 || !(!$onlyChangedImages || $origFile !== $file_info->getFilename()
+				)
 			) {
 				continue;
 			}
