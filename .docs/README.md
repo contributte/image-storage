@@ -1,6 +1,6 @@
-# Image Storage
+# Contributte | Image Storage
 
-Image storage for Nette framework
+Image storage for Nette framework.
 
 ---
 
@@ -18,20 +18,20 @@ Image storage for Nette framework
 Register extension:
 ```yml
 extensions:
-	imageStorage: Contributte\ImageStorage\DI\ImageStorageExtension
+    imageStorage: Contributte\ImageStorage\DI\ImageStorageExtension
 ```
 
 Configure extension:
 ```yml
 imageStorage:
-	data_path:          %wwwDir%/../public/data # Filesystem location
-	data_dir:           data                    # Relative path
-	algorithm_file:     sha1_file               # Algorithm to take image prefix directory from
-	algorithm_content:  sha1                    # ...
-	quality:            85                      # Default wuality when cropping
-	default_transform:  fit                     # Default crop transformation
-	noimage_identifier: noimage/03/no-image.png # No-image image
-	friendly_url:       false                   # Create friendly URLs?
+    data_path:          %wwwDir%/../public/data # Filesystem location
+    data_dir:           data                    # Relative path
+    algorithm_file:     sha1_file               # Algorithm to take image prefix directory from
+    algorithm_content:  sha1                    # ...
+    quality:            85                      # Default wuality when cropping
+    default_transform:  fit                     # Default crop transformation
+    noimage_identifier: noimage/03/no-image.png # No-image image
+    friendly_url:       false                   # Create friendly URLs?
 ```
 
 ## Images
@@ -57,27 +57,27 @@ use Nette\Application\UI\Presenter;
 class ImageStoragePresenter extends Presenter
 {
 
-	// Add $imageStorage to templates (in order to use macros)
-	use ImageStoragePresenterTrait;
+    // Add $imageStorage to templates (in order to use macros)
+    use ImageStoragePresenterTrait;
 
-	public function createComponentUpload()
-	{
-		$form->addUpload('upload', '');
-	}
+    public function createComponentUpload()
+    {
+        $form->addUpload('upload', '');
+    }
 
-	public function uploadSucceeded($form, $values)
-	{
-		// You can save image from upload
-		$image = $this->imageStorage->saveUpload($values->upload, 'images');
-		dump($image);
+    public function uploadSucceeded($form, $values)
+    {
+        // You can save image from upload
+        $image = $this->imageStorage->saveUpload($values->upload, 'images');
+        dump($image);
 
-		// Or directly image content
-		$image2 = $this->imageStorage->saveContent(
-			file_get_contents($values->upload->getTemporaryFile()),
-			'foobar.png',
-			'images'
-		);
-	}
+        // Or directly image content
+        $image2 = $this->imageStorage->saveContent(
+            file_get_contents($values->upload->getTemporaryFile()),
+            'foobar.png',
+            'images'
+        );
+    }
 
 }
 
