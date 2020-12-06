@@ -1,3 +1,9 @@
+# IDE
 /.idea
+
+# PHP
 /vendor
 /composer.lock
+
+# Tests
+/tests/tmp
