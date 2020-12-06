@@ -1,59 +1,52 @@
-# Image Storage
+![](https://heatbadger.now.sh/github/readme/contributte/image-storage/)
 
-Image storage for Nette framework
+<p align=center>
+  <a href="https://github.com/contributte/image-storage/actions"><img src="https://badgen.net/github/checks/contributte/image-storage/master?cache=300"></a>
+  <a href="https://coveralls.io/r/contributte/image-storage"><img src="https://badgen.net/coveralls/c/github/contributte/image-storage?cache=300"></a>
+  <a href="https://packagist.org/packages/contributte/image-storage"><img src="https://badgen.net/packagist/dm/contributte/image-storage"></a>
+  <a href="https://packagist.org/packages/contributte/image-storage"><img src="https://badgen.net/packagist/v/contributte/image-storage"></a>
+</p>
+<p align=center>
+  <a href="https://packagist.org/packages/contributte/image-storage"><img src="https://badgen.net/packagist/php/contributte/image-storage"></a>
+  <a href="https://github.com/contributte/image-storage"><img src="https://badgen.net/github/license/contributte/image-storage"></a>
+  <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
+  <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
+  <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/sponsor/donations/F96854"></a>
+</p>
 
------
+<p align=center>
+Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
+</p>
 
-[![Build Status](https://img.shields.io/travis/contributte/image-storage.svg?style=flat-square)](https://travis-ci.org/contributte/image-storage)
-[![Code coverage](https://img.shields.io/coveralls/contributte/image-storage.svg?style=flat-square)](https://coveralls.io/r/contributte/image-storage)
-[![Licence](https://img.shields.io/packagist/l/contributte/image-storage.svg?style=flat-square)](https://packagist.org/packages/contributte/image-storage)
+## Usage
 
-[![Downloads this Month](https://img.shields.io/packagist/dm/contributte/image-storage.svg?style=flat-square)](https://packagist.org/packages/contributte/image-storage)
-[![Downloads total](https://img.shields.io/packagist/dt/contributte/image-storage.svg?style=flat-square)](https://packagist.org/packages/contributte/image-storage)
-[![Latest stable](https://img.shields.io/packagist/v/contributte/image-storage.svg?style=flat-square)](https://packagist.org/packages/contributte/image-storage)
+To install latest version of `contributte/image-storage` use [Composer](https://getcomposer.com).
 
-## Discussion / Help
-
-[![Join the chat](https://img.shields.io/gitter/room/contributte/contributte.svg?style=flat-square)](http://bit.ly/ctteg)
-
-## Install
-
-```sh
-$ composer require contributte/image-storage
 ```
+composer install contributte/image-storage
+```
+
+## Documentation
+
+For details on how to use this package, check out our [documentation](.docs).
+
 ## Versions
 
-| State       | Version | Branch   | PHP      |
-|-------------|---------|----------|----------|
-| dev         | `^1.2`  | `master` | `>= 7.1` |
-| stable      | `^1.1`  | `master` | `>= 7.1` |
+| State       | Version | Branch   | Nette  | PHP      |
+|-------------|---------|----------|--------|----------|
+| dev         | `^1.2`  | `master` | 3.0+   | `>= 7.1` | 
+| stable      | `^1.1`  | `master` | 3.0+   | `>= 7.1` |
 
-## Overview
 
-- [Usage - how to register & configure](https://github.com/contributte/image-storage/tree/master/.docs#usage)
-- [Images - how to work with them](https://github.com/contributte/image-storage/tree/master/.docs#image)
-  - [Storing image](https://github.com/contributte/image-storage/tree/master/.docs#storing-image)
-  - [Transforming image](https://github.com/contributte/image-storage/tree/master/.docs#transforming-image)
-  - [Deleting image](https://github.com/contributte/image-storage/tree/master/.docs#deleting-image)
-  - [Friendly URL](https://github.com/contributte/image-storage/tree/master/.docs#friendly-url)
+## Development
 
-## Maintainers
+See [how to contribute](https://contributte.org) to this package. This package is currently maintained by these authors.
 
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <a href="https://github.com/paveljanda">
-            <img width="150" height="150" src="https://avatars1.githubusercontent.com/u/1488874?s=150&v=3">
-        </a>
-        </br>
-        <a href="https://github.com/paveljanda">Pavel Janda</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<a href="https://github.com/paveljanda">
+    <img width="80" height="80" src="https://avatars2.githubusercontent.com/u/1488874?v=3&s=80">
+</a>
 
 -----
 
-Thank you for testing, reporting and contributing.
-
+Consider to [support](https://contributte.com/partners) **contributte** development team.
+Also thank you for using this package. Thanks.
