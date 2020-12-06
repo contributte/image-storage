@@ -32,8 +32,8 @@
 		"latte/latte": "^2.5"
 	},
 	"require-dev": {
-		"ninjify/qa": "^0.11",
-		"ninjify/nunjuck": "^0.3",
+		"ninjify/qa": "^0.12",
+		"ninjify/nunjuck": "^0.4.0",
 		"phpstan/phpstan": "^0.12.33",
 		"phpstan/phpstan-nette": "^0.12.8",
 		"tracy/tracy": "^2.6"

@@ -125,9 +125,7 @@ class ImageNameScript
 			}
 		}
 
-		$identifier .= '.' . $this->extension;
-
-		return $identifier;
+		return $identifier . '.' . $this->extension;
 	}
 
 

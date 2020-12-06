@@ -122,12 +122,10 @@ class ImageStorage
 
 		$upload->move($path);
 
-		$image = new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
 			'sha' => $checksum,
 			'name' => self::fixName($upload->getName()),
 		]);
-
-		return $image;
 	}
 
 	private static function fixName(string $name): string
@@ -153,12 +151,10 @@ class ImageStorage
 
 		file_put_contents($path, $content, LOCK_EX);
 
-		$image = new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
 			'sha' => $checksum,
 			'name' => self::fixName($name),
 		]);
-
-		return $image;
 	}
 
 	/**
