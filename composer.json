@@ -40,21 +40,6 @@
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
-	"scripts": {
-		"qa": [
-			"linter src tests",
-			"codesniffer src tests"
-		],
-		"tester": [
-			"tester -s -p php --colors 1 -C tests/cases"
-		],
-		"coverage": [
-			"tester -s -p php --colors 1 -C -d extension=xdebug.so --coverage ./coverage.xml --coverage-src ./src tests/cases"
-		],
-		"phpstan": [
-			"\"vendor/bin/phpstan\" analyse"
-		]
-	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "1.2.x-dev"
