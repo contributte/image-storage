@@ -34,7 +34,7 @@ For details on how to use this package, check out our [documentation](.docs).
 
 | State       | Version | Branch   | Nette  | PHP      |
 |-------------|---------|----------|--------|----------|
-| dev         | `^1.2`  | `master` | 3.0+   | `>= 7.1` | 
+| dev         | `^1.2`  | `master` | 3.0+   | `>= 7.1` |
 | stable      | `^1.1`  | `master` | 3.0+   | `>= 7.1` |
 
 
@@ -49,4 +49,4 @@ See [how to contribute](https://contributte.org) to this package. This package i
 -----
 
 Consider to [support](https://contributte.com/partners) **contributte** development team.
-Also thank you for using this package. Thanks.
+Also thank you for using this package.
