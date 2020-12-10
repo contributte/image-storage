@@ -15,7 +15,7 @@
 </p>
 
 <p align=center>
-Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
+Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://paveljanda.com">paveljanda.com</a>, <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
 </p>
 
 ## Usage
@@ -44,6 +44,10 @@ See [how to contribute](https://contributte.org) to this package. This package i
 
 <a href="https://github.com/paveljanda">
     <img width="80" height="80" src="https://avatars2.githubusercontent.com/u/1488874?v=3&s=80">
+</a>
+
+<a href="https://github.com/f3l1x">
+    <img width="80" height="80" src="https://avatars0.githubusercontent.com/u/538058?v=3&s=80">
 </a>
 
 -----
