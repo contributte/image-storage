@@ -9,7 +9,7 @@ Image storage for Nette framework.
 - [Usage - how to register & configure](#usage)
 - [Images - how to work with them](#images)
   - [Storing image](#storing-image)
-  - [Transforming image](#transforming-image)
+  - [Transforming image](#transforming-image-resizing-cropping)
   - [Deleting image](#deleting-image)
   - [Friendly URL](#friendly-url)
 
