@@ -22,8 +22,8 @@ Website ðŸš€ <a href="https://contributte.org">contributte.org</a> | Contact ðŸ‘
 
 To install latest version of `contributte/image-storage` use [Composer](https://getcomposer.org).
 
-```
-$ composer require contributte/image-storage
+```bash
+composer require contributte/image-storage
 ```
 
 ## Documentation
