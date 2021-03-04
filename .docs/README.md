@@ -38,10 +38,10 @@ imageStorage:
 
 ## Storing image
 
-You are saving files within particular namespaces (eg 'avatars'). 
+You are saving files within particular namespaces (eg 'avatars').
 For better filesystem optimization, target files are saved in `<namespace>/<hash>/<file.ext>`,
 where the hash is made from first 2 characters of sha1 hash (or some other configured hashing algorithm) of target file.
-Therefore there won't be thousands of files in one directory, 
+Therefore there won't be thousands of files in one directory,
 but files will be distributed under that hash-named directories.
 
 
@@ -108,7 +108,7 @@ In [Latte](https://latte.nette.org/) template:
 ```
 ## Deleting image
 
-Once you want to delete an image, 
+Once you want to delete an image,
 you should delete all other transformed images made from the original one.
 
 From string identifier:
@@ -144,15 +144,15 @@ The original images remain saved.
 
 ## Friendly URL
 
-The transformed image name does not look to much friendly (eg `/avatars/kitty.200x200.fit.jpg`). 
+The transformed image name does not look to much friendly (eg `/avatars/kitty.200x200.fit.jpg`).
 You can change the method of creating links to images in configuration file so the link will look `/avatars/200x200.fit/kitty.jpg` which is much more friendly when downloading the image.
 
-If you don't want to make links to image in this format: 
+If you don't want to make links to image in this format:
 ```html
 <img src="/data/images/ed/kitty.100x200.exact.q85.jpg">
 ```
 
-But like this: 
+But like this:
 ```html
 <img src="/data/images/ed/100x200.exact.q85/kitty.jpg?_image_storage">
 ```
@@ -161,7 +161,7 @@ But like this:
     ```yml
     imageStorage:
         friendly_url: TRUE
-    ``` 
+    ```
 
 2) Alter your `.htaccess` file:
     ```htaccess
