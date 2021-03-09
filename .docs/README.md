@@ -16,13 +16,13 @@ Image storage for Nette framework.
 ## Usage
 
 Register extension:
-```yml
+```yaml
 extensions:
     imageStorage: Contributte\ImageStorage\DI\ImageStorageExtension
 ```
 
 Configure extension:
-```yml
+```yaml
 imageStorage:
     data_path:          %wwwDir%/../public/data # Filesystem location
     data_dir:           data                    # Relative path
@@ -158,7 +158,7 @@ But like this:
 ```
 
 1) Add a configuration to imageStorage extension in your config.neon:
-    ```yml
+    ```yaml
     imageStorage:
         friendly_url: TRUE
     ```
