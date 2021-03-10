@@ -8,30 +8,30 @@ Image storage for Nette framework.
 
 - [Usage - how to register & configure](#usage)
 - [Images - how to work with them](#images)
-  - [Storing image](#storing-image)
-  - [Transforming image](#transforming-image-resizing-cropping)
-  - [Deleting image](#deleting-image)
-  - [Friendly URL](#friendly-url)
+	- [Storing image](#storing-image)
+	- [Transforming image](#transforming-image-resizing-cropping)
+	- [Deleting image](#deleting-image)
+	- [Friendly URL](#friendly-url)
 
 ## Usage
 
 Register extension:
-```yaml
+```neon
 extensions:
-    imageStorage: Contributte\ImageStorage\DI\ImageStorageExtension
+	imageStorage: Contributte\ImageStorage\DI\ImageStorageExtension
 ```
 
 Configure extension:
-```yaml
+```neon
 imageStorage:
-    data_path:          %wwwDir%/../public/data # Filesystem location
-    data_dir:           data                    # Relative path
-    algorithm_file:     sha1_file               # Algorithm to take image prefix directory from
-    algorithm_content:  sha1                    # ...
-    quality:            85                      # Default wuality when cropping
-    default_transform:  fit                     # Default crop transformation
-    noimage_identifier: noimage/03/no-image.png # No-image image
-    friendly_url:       false                   # Create friendly URLs?
+	data_path:			%wwwDir%/../public/data		# Filesystem location
+	data_dir:			data						# Relative path
+	algorithm_file:	 	sha1_file					# Algorithm to take image prefix directory from
+	algorithm_content:  sha1						# ...
+	quality:			85							# Default wuality when cropping
+	default_transform:  fit							# Default crop transformation
+	noimage_identifier: noimage/03/no-image.png 	# No-image image
+	friendly_url:		false						# Create friendly URLs?
 ```
 
 ## Images
@@ -57,30 +57,28 @@ use Nette\Application\UI\Presenter;
 class ImageStoragePresenter extends Presenter
 {
 
-    // Add $imageStorage to templates (in order to use macros)
-    use ImageStoragePresenterTrait;
+	// Add $imageStorage to templates (in order to use macros)
+	use ImageStoragePresenterTrait;
 
-    public function createComponentUpload()
-    {
-        $form->addUpload('upload', '');
-    }
+	public function createComponentUpload()
+	{
+		$form->addUpload('upload', '');
+	}
 
-    public function uploadSucceeded($form, $values)
-    {
-        // You can save image from upload
-        $image = $this->imageStorage->saveUpload($values->upload, 'images');
-        dump($image);
+	public function uploadSucceeded($form, $values)
+	{
+		// You can save image from upload
+		$image = $this->imageStorage->saveUpload($values->upload, 'images');
+		dump($image);
 
-        // Or directly image content
-        $image2 = $this->imageStorage->saveContent(
-            file_get_contents($values->upload->getTemporaryFile()),
-            'foobar.png',
-            'images'
-        );
-    }
-
+		// Or directly image content
+		$image2 = $this->imageStorage->saveContent(
+			file_get_contents($values->upload->getTemporaryFile()),
+			'foobar.png',
+			'images'
+		);
+	}
 }
-
 ```
 
 ## Transforming image - resizing, cropping
@@ -102,16 +100,19 @@ $img = $this->imageStorage->fromIdentifier(['images/ed/kitty.jpg', '20x20']);
 ```
 
 In [Latte](https://latte.nette.org/) template:
+
 ```latte
 {var $identifier = 'images/ed/kitty.jpg'}
 {img $identifier}
 ```
+
 ## Deleting image
 
 Once you want to delete an image,
 you should delete all other transformed images made from the original one.
 
 From string identifier:
+
 ```php
 <?php declare(strict_types = 1);
 
@@ -120,6 +121,7 @@ $this->imageStorage->delete($img);
 ```
 
 From object:
+
 ```php
 <?php declare(strict_types = 1);
 
@@ -158,14 +160,15 @@ But like this:
 ```
 
 1) Add a configuration to imageStorage extension in your config.neon:
-    ```yaml
-    imageStorage:
-        friendly_url: TRUE
-    ```
+```neon
+imageStorage:
+	friendly_url: TRUE
+```
 
 2) Alter your `.htaccess` file:
-    ```htaccess
-    # Images Storage conversion with directory suffix
-    RewriteCond %{QUERY_STRING} _image_storage
-    RewriteRule ^(\w+)/(\w+)/(\w+)/([^/]+)/(.+)\.(.+) $1/$2/$3/$5.$4.$6 [L]
-    ```
+
+```htaccess
+# Images Storage conversion with directory suffix
+RewriteCond %{QUERY_STRING} _image_storage
+RewriteRule ^(\w+)/(\w+)/(\w+)/([^/]+)/(.+)\.(.+) $1/$2/$3/$5.$4.$6 [L]
+```
