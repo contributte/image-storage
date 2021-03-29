@@ -30,7 +30,7 @@ imageStorage:
 	algorithm_content:  sha1						# ...
 	quality:			85							# Default wuality when cropping
 	default_transform:  fit							# Default crop transformation
-	noimage_identifier: noimage/03/no-image.png 	# No-image image
+	noimage_identifier:  images/noimage/no-image.png # No-image image
 	friendly_url:		false						# Create friendly URLs?
 ```
 
