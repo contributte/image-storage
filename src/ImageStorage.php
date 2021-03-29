@@ -263,7 +263,7 @@ class ImageStorage
 		$file = implode('/', [$this->data_path, $script->original]);
 
 		if (!file_exists($file)) {
-			$identifier = '_storage_no_image/8f/no_image.png';
+			$identifier = $this->noimage_identifier;
 			$new_path = sprintf('%s/%s', $this->data_path, $identifier);
 
 			if (!file_exists($new_path)) {
@@ -278,7 +278,6 @@ class ImageStorage
 				}
 
 				$data = base64_decode(require __DIR__ . '/NoImageSource.php');
-				assert($data);
 				$_image = NetteImage::fromString($data);
 				$_image->save($new_path, $script->quality ?: $this->quality);
 			}
