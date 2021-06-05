@@ -1,48 +1,57 @@
 {
-	"name": "contributte/image-storage",
-	"type": "library",
-	"description": "Image storage for Nette framework",
-	"keywords": ["image", "nette", "storage", "crop", "resize", "upload"],
-	"license": ["MIT"],
-	"support": {
-		"issues": "https://github.com/contributte/image-storage/issues"
-	},
-	"authors": [
-		{
-			"name": "Pavel Janda",
-			"homepage": "https://paveljanda.com"
-		}
-	],
-	"autoload": {
-		"psr-4": {
-			"Contributte\\ImageStorage\\": "src/"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"Tests\\": "tests/cases"
-		}
-	},
-	"require": {
-		"php": ">=7.1",
-		"nette/application": "^3.0",
-		"nette/utils": "^3.0",
-		"nette/di": "^3.0",
-		"nette/http": "^3.0",
-		"latte/latte": "^2.5"
-	},
-	"require-dev": {
-		"ninjify/qa": "^0.12",
-		"ninjify/nunjuck": "^0.4.0",
-		"phpstan/phpstan": "^0.12.33",
-		"phpstan/phpstan-nette": "^0.12.8",
-		"tracy/tracy": "^2.6"
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"extra": {
-		"branch-alias": {
-			"dev-master": "1.2.x-dev"
-		}
-	}
+  "name": "contributte/image-storage",
+  "type": "library",
+  "description": "Image storage for Nette framework",
+  "keywords": [
+    "image",
+    "nette",
+    "storage",
+    "crop",
+    "resize",
+    "upload"
+  ],
+  "license": [
+    "MIT"
+  ],
+  "support": {
+    "issues": "https://github.com/contributte/image-storage/issues"
+  },
+  "authors": [
+    {
+      "name": "Pavel Janda",
+      "homepage": "https://paveljanda.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Contributte\\ImageStorage\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/cases"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "nette/application": "^3.0",
+    "nette/utils": "^3.0",
+    "nette/di": "^3.0",
+    "nette/http": "^3.0",
+    "latte/latte": "^2.5"
+  },
+  "require-dev": {
+    "ninjify/qa": "^0.12",
+    "ninjify/nunjuck": "^0.4.0",
+    "phpstan/phpstan": "^0.12.33",
+    "phpstan/phpstan-nette": "^0.12.8",
+    "tracy/tracy": "^2.6"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.2.x-dev"
+    }
+  }
 }
