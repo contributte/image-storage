@@ -2,8 +2,17 @@
 	"name": "contributte/image-storage",
 	"type": "library",
 	"description": "Image storage for Nette framework",
-	"keywords": ["image", "nette", "storage", "crop", "resize", "upload"],
-	"license": ["MIT"],
+	"keywords": [
+		"image",
+		"nette",
+		"storage",
+		"crop",
+		"resize",
+		"upload"
+	],
+	"license": [
+		"MIT"
+	],
 	"support": {
 		"issues": "https://github.com/contributte/image-storage/issues"
 	},
@@ -42,7 +51,7 @@
 	"prefer-stable": true,
 	"extra": {
 		"branch-alias": {
-			"dev-master": "1.2.x-dev"
+			"dev-master": "2.2.x-dev"
 		}
 	}
 }
