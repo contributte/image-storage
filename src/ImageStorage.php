@@ -115,7 +115,7 @@ class ImageStorage
 		}
 
 		[$path, $identifier] = $this->getSavePath(
-			self::fixName($upload->getName()),
+			self::fixName($upload->getUntrustedName()),
 			$namespace,
 			$checksum
 		);
@@ -124,7 +124,7 @@ class ImageStorage
 
 		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
 			'sha' => $checksum,
-			'name' => self::fixName($upload->getName()),
+			'name' => self::fixName($upload->getUntrustedName()),
 		]);
 	}
 
