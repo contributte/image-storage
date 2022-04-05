@@ -91,10 +91,12 @@ final class ImageStorageTest extends BaseTestCase
 
 		$this->storage->delete('files/49/kitty.jpg', true);
 
-		array_pop($file_array);
+		$originalImage = array_pop($file_array);
 		foreach ($file_array as $name) {
 			Assert::falsey(file_exists($name));
 		}
+
+		Assert::truthy(file_exists($originalImage));
 	}
 
 
