@@ -37,7 +37,6 @@ final class ImageNameScriptTest extends BaseTestCase
 		Assert::same($s->extension, 'jpg');
 		Assert::same($s->crop, []);
 
-
 		$s = ImageNameScript::fromName('/data/images/49/kitty.200x200crop100x150x100x100.fit.q85.jpg');
 		Assert::same($s->crop, [100, 150, 100, 100]);
 	}
