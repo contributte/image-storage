@@ -23,6 +23,9 @@ class ImageStorage
 	/** @var string */
 	private $data_dir;
 
+	/** @var string */
+	private $orig_path;
+
 	/** @var callable(string): string */
 	private $algorithm_file;
 
@@ -60,6 +63,7 @@ class ImageStorage
 	public function __construct(
 		string $data_path,
 		string $data_dir,
+		string $orig_path,
 		callable $algorithm_file,
 		callable $algorithm_content,
 		int $quality,
@@ -70,6 +74,7 @@ class ImageStorage
 	{
 		$this->data_path = $data_path;
 		$this->data_dir = $data_dir;
+		$this->orig_path = $orig_path;
 		$this->algorithm_file = $algorithm_file;
 		$this->algorithm_content = $algorithm_content;
 		$this->quality = $quality;
@@ -91,20 +96,39 @@ class ImageStorage
 		$dir = implode('/', [$this->data_path, $script->namespace, $script->prefix]);
 		$origFile = $script->name . '.' . $script->extension;
 
-		if (!file_exists($dir)) {
-			return;
-		}
-
-		foreach (new DirectoryIterator($dir) as $file_info) {
-			if (
-				!preg_match($pattern, $file_info->getFilename())
-				 || !(!$onlyChangedImages || $origFile !== $file_info->getFilename()
-				)
-			) {
-				continue;
+		if ($this->orig_path === $this->data_path) {
+			if (!file_exists($dir)) {
+				return;
 			}
 
-			unlink($file_info->getPathname());
+			foreach (new DirectoryIterator($dir) as $file_info) {
+				if (
+					!preg_match($pattern, $file_info->getFilename())
+					|| !(!$onlyChangedImages || $origFile !== $file_info->getFilename()
+					)
+				) {
+					continue;
+				}
+
+				unlink($file_info->getPathname());
+			}
+		} else {
+			$rmdir = function (string $path) use (&$rmdir) {
+				if (is_file($path)) {
+					unlink($path);
+				} elseif (is_dir($path)) {
+					$scan = glob(rtrim($path, '/') . '/*');
+					foreach ($scan as $sub_path) {
+						$rmdir($sub_path);
+					}
+					rmdir($path);
+				}
+			};
+
+			if (!$onlyChangedImages){
+				unlink(implode('/', [$this->orig_path, $script->namespace, $script->prefix, $origFile]));
+			}
+			$rmdir($dir);
 		}
 	}
 
@@ -132,7 +156,6 @@ class ImageStorage
 	{
 		return Strings::webalize($name, '._');
 	}
-
 
 	/**
 	 * @param mixed $content
@@ -167,12 +190,20 @@ class ImageStorage
 		}
 
 		$identifier = $args[0];
+		$quality = $args[3] ?? $this->quality;
+		$flag = $args[2] ?? $this->default_transform;
 
+		$orig_file = implode('/', [$this->orig_path, $identifier]);
+		$data_file = implode('/', [$this->data_path, $identifier]);
 		$isNoImage = false;
 
 		if (count($args) === 1) {
-			if (!file_exists(implode('/', [$this->data_path, $identifier])) || !$identifier) {
+			if (!file_exists($orig_file) || !$identifier) {
 				return $this->getNoImage(true);
+			}
+			if (!file_exists($data_file)) {
+				@mkdir(dirname($data_file), $this->mask, true);
+				@copy($orig_file, $data_file);
 			}
 
 			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
@@ -190,16 +221,13 @@ class ImageStorage
 			$crop = [(int) $matches[4], (int) $matches[5], (int) $matches[6], (int) $matches[7]];
 		}
 
-		$flag = $args[2] ?? $this->default_transform;
-		$quality = $args[3] ?? $this->quality;
-
 		if (!$identifier) {
 			$isNoImage = false;
 			[$script, $file] = $this->getNoImage(false);
 		} else {
 			$script = ImageNameScript::fromIdentifier($identifier);
 
-			$file = implode('/', [$this->data_path, $script->original]);
+			$file = $orig_file;
 
 			if (!file_exists($file)) {
 				$isNoImage = true;
@@ -213,8 +241,9 @@ class ImageStorage
 		$script->setQuality($quality);
 
 		$identifier = $script->getIdentifier();
+		$data_file = implode('/', [$this->data_path, $identifier]);
 
-		if (!file_exists(implode('/', [$this->data_path, $identifier]))) {
+		if (!file_exists($data_file)) {
 			if (!file_exists($file)) {
 				return new Image(false, '#', '#', 'Can not find image');
 			}
@@ -243,8 +272,9 @@ class ImageStorage
 
 			$_image->resize($size[0], $size[1], $flag);
 
+			@mkdir(dirname($data_file), $this->mask, true);
 			$_image->sharpen()->save(
-				implode('/', [$this->data_path, $identifier]),
+				$data_file,
 				$quality
 			);
 		}
@@ -306,7 +336,7 @@ class ImageStorage
 	private function getSavePath(string $name, string $namespace, string $checksum): array
 	{
 		$prefix = substr($checksum, 0, 2);
-		$dir = implode('/', [$this->data_path, $namespace, $prefix]);
+		$dir = implode('/', [$this->orig_path, $namespace, $prefix]);
 
 		@mkdir($dir, $this->mask, true); // Directory may exist
 

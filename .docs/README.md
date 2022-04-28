@@ -24,14 +24,15 @@ extensions:
 Configure extension:
 ```neon
 imageStorage:
-	data_path: %wwwDir%/../public/data									# Filesystem location
-	data_dir:	data																			# Relative path
-	algorithm_file: sha1_file														# Algorithm to take image prefix directory from
-	algorithm_content: sha1															# ...
-	quality: 85																					# Default wuality when cropping
-	default_transform: fit															# Default crop transformation
-	noimage_identifier: images/noimage/no-image.png			# No-image image
-	friendly_url: false																	# Create friendly URLs?
+	data_path: %wwwDir%/data                            # Filesystem location
+	data_dir: data                                      # Relative path
+	orig_path: %wwwDir%/../data                         # Original images dir (if is null, will be same as data_path)
+	algorithm_file: sha1_file                           # Algorithm to take image prefix directory from
+	algorithm_content: sha1                             # ...
+	quality: 85                                         # Default wuality when cropping
+	default_transform: fit                              # Default crop transformation
+	noimage_identifier: images/noimage/no-image.png     # No-image image
+	friendly_url: false                                 # Create friendly URLs?
 ```
 
 ## Images
