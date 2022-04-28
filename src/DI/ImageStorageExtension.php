@@ -16,6 +16,7 @@ class ImageStorageExtension extends CompilerExtension
 		return Expect::structure([
 			'data_path' => Expect::string()->required(),
 			'data_dir' => Expect::string()->required(),
+			'orig_path' => Expect::string()->default(null),
 			'algorithm_file' => Expect::string('sha1_file'),
 			'algorithm_content' => Expect::string('sha1'),
 			'quality' => Expect::int(85),
@@ -28,6 +29,7 @@ class ImageStorageExtension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$this->config->orig_path =  $this->config->orig_path ?? $this->config->data_path;
 		$config = (array) $this->config;
 		$builder->addDefinition($this->prefix('storage'))
 			->setType(ImageStorage::class)
