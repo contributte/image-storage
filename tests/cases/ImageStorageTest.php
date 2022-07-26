@@ -58,32 +58,45 @@ final class ImageStorageTest extends BaseTestCase
 	public function testDelete(): void
 	{
 		$files = __DIR__ . '/../data/files';
-		@mkdir($files . '/a', 0777, true);
+		@mkdir($files . '/49', 0777, true);
 
 		$file_array = [
-			sprintf('%s/a/kitty.100x100.fit.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.fit.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.exact.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.shrink_only.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.fill.q1.jpg', $files),
-			sprintf('%s/a/kitty.100x200.stretch.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.fill.q10.jpg', $files),
-			sprintf('%s/a/kitty.200x200crop100x150x100x100.fit.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.fill.q100.jpg', $files),
-			sprintf('%s/a/kitty.20x20.fit.q85.jpg', $files),
-			sprintf('%s/a/kitty.100x200.fill.q85.jpg', $files),
-			sprintf('%s/a/kitty.jpg', $files),
+			sprintf('%s/49/kitty.100x100.fit.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.fit.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.exact.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.shrink_only.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.fill.q1.jpg', $files),
+			sprintf('%s/49/kitty.100x200.stretch.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.fill.q10.jpg', $files),
+			sprintf('%s/49/kitty.200x200crop100x150x100x100.fit.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.fill.q100.jpg', $files),
+			sprintf('%s/49/kitty.20x20.fit.q85.jpg', $files),
+			sprintf('%s/49/kitty.100x200.fill.q85.jpg', $files),
+			sprintf('%s/49/kitty.jpg', $files),
 		];
 
 		foreach ($file_array as $name) {
 			touch($name);
 		}
 
-		$this->storage->delete('files/a/kitty.jpg');
+		$this->storage->delete('files/49/kitty.jpg');
 
 		foreach ($file_array as $name) {
 			Assert::falsey(file_exists($name));
 		}
+
+		foreach ($file_array as $name) {
+			touch($name);
+		}
+
+		$this->storage->delete('files/49/kitty.jpg', true);
+
+		$originalImage = array_pop($file_array);
+		foreach ($file_array as $name) {
+			Assert::falsey(file_exists($name));
+		}
+
+		Assert::truthy(file_exists($originalImage));
 	}
 
 

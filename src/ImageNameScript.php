@@ -55,7 +55,7 @@ class ImageNameScript
 
 	public static function fromName(string $name): ImageNameScript
 	{
-		$pattern = preg_replace('/__file__/', '([^\/]*)\/([^\/]*)\/(.*?)', self::PATTERN);
+		$pattern = preg_replace('/__file__/', '(.*)\/([^\/]{2})\/(.*?)', self::PATTERN);
 		preg_match($pattern, $name, $matches);
 
 		$script = new self($matches[0]);
