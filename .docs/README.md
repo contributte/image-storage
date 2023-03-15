@@ -147,7 +147,7 @@ The original images remain saved.
 
 ## Friendly URL
 
-The transformed image name does not look to much friendly (eg `/avatars/kitty.200x200.fit.jpg`).
+The transformed image name does not look too friendly (eg `/avatars/kitty.200x200.fit.jpg`).
 You can change the method of creating links to images in configuration file so the link will look `/avatars/200x200.fit/kitty.jpg` which is much more friendly when downloading the image.
 
 If you don't want to make links to image in this format:
