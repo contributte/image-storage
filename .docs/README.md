@@ -29,7 +29,7 @@ imageStorage:
 	orig_path: %wwwDir%/../data                         # Original images dir (if is null, will be same as data_path)
 	algorithm_file: sha1_file                           # Algorithm to take image prefix directory from
 	algorithm_content: sha1                             # ...
-	quality: 85                                         # Default wuality when cropping
+	quality: 85                                         # Default quality when cropping
 	default_transform: fit                              # Default crop transformation
 	noimage_identifier: images/noimage/no-image.png     # No-image image
 	friendly_url: false                                 # Create friendly URLs?
@@ -52,7 +52,7 @@ but files will be distributed under that hash-named directories.
 
 namespace Your\App\Presenters;
 
-use Contributte\ImageStorage\ImageStoragePresenterTrait;;
+use Contributte\ImageStorage\ImageStoragePresenterTrait;
 use Nette\Application\UI\Presenter;
 
 class ImageStoragePresenter extends Presenter
@@ -147,7 +147,7 @@ The original images remain saved.
 
 ## Friendly URL
 
-The transformed image name does not look to much friendly (eg `/avatars/kitty.200x200.fit.jpg`).
+The transformed image name does not look too friendly (eg `/avatars/kitty.200x200.fit.jpg`).
 You can change the method of creating links to images in configuration file so the link will look `/avatars/200x200.fit/kitty.jpg` which is much more friendly when downloading the image.
 
 If you don't want to make links to image in this format:
