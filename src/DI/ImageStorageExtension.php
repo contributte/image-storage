@@ -46,7 +46,7 @@ class ImageStorageExtension extends CompilerExtension
 		/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
 		$latteFactory = $builder->getDefinition('latte.latteFactory');
 		assert($latteFactory instanceof Nette\DI\Definitions\FactoryDefinition);
-		if (version_compare(Latte\Engine::Version, '3', '<')) {
+		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
 			$latteFactory->getResultDefinition()
 				->addSetup('Contributte\ImageStorage\Macros\Macros::install(?->getCompiler())', ['@self']);
 		} else {
