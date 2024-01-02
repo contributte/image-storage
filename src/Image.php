@@ -10,26 +10,19 @@ class Image
 
 	use SmartObject;
 
-	/** @var string */
-	public $data_dir;
+	public string $data_dir;
 
-	/** @var string */
-	public $data_path;
+	public string $data_path;
 
-	/** @var string */
-	public $identifier;
+	public string $identifier;
 
-	/** @var string */
-	public $sha;
+	public string $sha;
 
-	/** @var string */
-	public $name;
+	public string $name;
 
-	/** @var ImageNameScript|null */
-	private $script;
+	private ?ImageNameScript $script = null;
 
-	/** @var bool */
-	private $friendly_url = false;
+	private bool $friendly_url = false;
 
 	/**
 	 * @param bool[]|string[]|ImageNameScript[]|null[] $props
@@ -59,11 +52,6 @@ class Image
 		return implode('/', [$this->data_path, $this->identifier]);
 	}
 
-	public function __toString(): string
-	{
-		return $this->identifier;
-	}
-
 	public function getQuery(): string
 	{
 		if ($this->script === null) {
@@ -89,6 +77,11 @@ class Image
 	public function getScript(): ImageNameScript
 	{
 		return $this->script ?: ImageNameScript::fromIdentifier($this->identifier);
+	}
+
+	public function __toString(): string
+	{
+		return $this->identifier;
 	}
 
 }

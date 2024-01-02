@@ -12,46 +12,38 @@ class ImageNameScript
 	public const PATTERN = '/__file__(\.(\d+)x(\d+)(crop(\d+)x(\d+)x(\d+)x(\d+))?\.(\w+))?(\.q(\d+))?\.([^\.]+)$/';
 
 	/** @var string **/
-	public $identifier;
+	public string $identifier;
 
 	/** @var string **/
-	public $original;
+	public string $original;
 
-	/** @var string */
-	public $namespace;
+	public string $namespace;
 
-	/** @var string */
-	public $prefix;
+	public string $prefix;
 
-	/** @var string */
-	public $name;
+	public string $name;
 
 	/** @var int[] **/
-	public $size = [];
+	public array $size = [];
 
-	/** @var string */
-	public $flag;
+	public string $flag;
 
-	/** @var int */
-	public $quality;
+	public int $quality;
 
-	/** @var string */
-	public $extension;
+	public string $extension;
 
 	/** @var int[] */
-	public $crop = [];
+	public array $crop = [];
 
 	public function __construct(string $identifier)
 	{
 		$this->identifier = $identifier;
 	}
 
-
 	public static function fromIdentifier(string $identifier): ImageNameScript
 	{
 		return self::fromName($identifier);
 	}
-
 
 	public static function fromName(string $name): ImageNameScript
 	{
@@ -60,22 +52,21 @@ class ImageNameScript
 
 		$script = new self($matches[0]);
 
-		$script->original  = $matches[1] . '/' . $matches[2] . '/' . $matches[3] . '.' . $matches[15];
+		$script->original = $matches[1] . '/' . $matches[2] . '/' . $matches[3] . '.' . $matches[15];
 		$script->namespace = $matches[1];
-		$script->prefix    = $matches[2];
-		$script->name      = $matches[3];
-		$script->size      = [(int) $matches[5], (int) $matches[6]];
-		$script->flag      = $matches[12];
-		$script->quality   = $matches[14];
+		$script->prefix = $matches[2];
+		$script->name = $matches[3];
+		$script->size = [(int) $matches[5], (int) $matches[6]];
+		$script->flag = $matches[12];
+		$script->quality = $matches[14];
 		$script->extension = $matches[15];
 
 		if ($matches[8] && $matches[9] && $matches[10] && $matches[11]) {
-			$script->crop  = [(int) $matches[8], (int) $matches[9], (int) $matches[10], (int) $matches[11]];
+			$script->crop = [(int) $matches[8], (int) $matches[9], (int) $matches[10], (int) $matches[11]];
 		}
 
 		return $script;
 	}
-
 
 	/**
 	 * @param int[] $size
@@ -85,7 +76,6 @@ class ImageNameScript
 		$this->size = $size;
 	}
 
-
 	/**
 	 * @param int[] $crop
 	 */
@@ -94,18 +84,15 @@ class ImageNameScript
 		$this->crop = $crop;
 	}
 
-
 	public function setFlag(string $flag): void
 	{
 		$this->flag = $flag;
 	}
 
-
 	public function setQuality(int $quality): void
 	{
 		$this->quality = $quality;
 	}
-
 
 	public function getIdentifier(): string
 	{
@@ -128,12 +115,10 @@ class ImageNameScript
 		return $identifier . '.' . $this->extension;
 	}
 
-
 	public function hasCrop(): bool
 	{
 		return count($this->crop) > 0;
 	}
-
 
 	public function toQuery(): string
 	{

@@ -9,8 +9,7 @@ use Nette\Application\UI\ITemplate;
 trait ImageStoragePresenterTrait
 {
 
-	/** @var ImageStorage */
-	public $imageStorage;
+	public ImageStorage $imageStorage;
 
 	public function injectImageStorage(ImageStorage $imageStorage): void
 	{

@@ -8,6 +8,7 @@ use Contributte\ImageStorage\Exception\ImageStorageException;
 use DirectoryIterator;
 use Nette\Http\FileUpload;
 use Nette\SmartObject;
+use Nette\Utils\FileSystem;
 use Nette\Utils\Image as NetteImage;
 use Nette\Utils\Strings;
 use Nette\Utils\UnknownImageFileException;
@@ -17,14 +18,11 @@ class ImageStorage
 
 	use SmartObject;
 
-	/** @var string */
-	private $data_path;
+	private string $data_path;
 
-	/** @var string */
-	private $data_dir;
+	private string $data_dir;
 
-	/** @var string */
-	private $orig_path;
+	private string $orig_path;
 
 	/** @var callable(string): string */
 	private $algorithm_file;
@@ -32,23 +30,18 @@ class ImageStorage
 	/** @var callable(string): string */
 	private $algorithm_content;
 
-	/** @var int */
-	private $quality;
+	private int $quality;
 
-	/** @var string */
-	private $default_transform;
+	private string $default_transform;
 
-	/** @var string */
-	private $noimage_identifier;
+	private string $noimage_identifier;
 
-	/** @var bool */
-	private $friendly_url;
+	private bool $friendly_url;
 
-	/** @var int */
-	private $mask = 0775;
+	private int $mask = 0775;
 
 	/** @var int[] */
-	private $_image_flags = [
+	private array $_image_flags = [
 		'fit' => 0,
 		'fill' => 4,
 		'exact' => 8,
@@ -83,10 +76,7 @@ class ImageStorage
 		$this->friendly_url = $friendly_url;
 	}
 
-	/**
-	 * @param mixed $arg
-	 */
-	public function delete($arg, bool $onlyChangedImages = false): void
+	public function delete(mixed $arg, bool $onlyChangedImages = false): void
 	{
 		$script = is_object($arg) && $arg instanceof Image
 			? ImageNameScript::fromIdentifier($arg->identifier)
@@ -113,22 +103,11 @@ class ImageStorage
 				unlink($file_info->getPathname());
 			}
 		} else {
-			$rmdir = function (string $path) use (&$rmdir) {
-				if (is_file($path)) {
-					unlink($path);
-				} elseif (is_dir($path)) {
-					$scan = glob(rtrim($path, '/') . '/*');
-					foreach ($scan as $sub_path) {
-						$rmdir($sub_path);
-					}
-					rmdir($path);
-				}
-			};
-
-			if (!$onlyChangedImages){
+			if (!$onlyChangedImages) {
 				unlink(implode('/', [$this->orig_path, $script->namespace, $script->prefix, $origFile]));
 			}
-			$rmdir($dir);
+
+			FileSystem::delete($dir);
 		}
 	}
 
@@ -152,15 +131,7 @@ class ImageStorage
 		]);
 	}
 
-	private static function fixName(string $name): string
-	{
-		return Strings::webalize($name, '._');
-	}
-
-	/**
-	 * @param mixed $content
-	 */
-	public function saveContent($content, string $name, string $namespace, ?string $checksum = null): Image
+	public function saveContent(mixed $content, string $name, string $namespace, ?string $checksum = null): Image
 	{
 		if (!$checksum) {
 			$checksum = call_user_func_array($this->algorithm_content, [$content]);
@@ -180,10 +151,7 @@ class ImageStorage
 		]);
 	}
 
-	/**
-	 * @param mixed $args
-	 */
-	public function fromIdentifier($args): Image
+	public function fromIdentifier(mixed $args): Image
 	{
 		if (!is_array($args)) {
 			$args = [$args];
@@ -201,6 +169,7 @@ class ImageStorage
 			if (!file_exists($orig_file) || !$identifier) {
 				return $this->getNoImage(true);
 			}
+
 			if (!file_exists($data_file)) {
 				@mkdir(dirname($data_file), $this->mask, true);
 				@copy($orig_file, $data_file);
@@ -287,7 +256,7 @@ class ImageStorage
 	 * @phpstan-return Image|array{ImageNameScript, string}
 	 * @throws ImageStorageException
 	 */
-	public function getNoImage(bool $return_image = false)
+	public function getNoImage(bool $return_image = false): Image|array
 	{
 		$script = ImageNameScript::fromIdentifier($this->noimage_identifier);
 		$file = implode('/', [$this->data_path, $script->original]);
@@ -307,7 +276,7 @@ class ImageStorage
 					throw new ImageStorageException('Could not create default no_image.png. ' . $dirName . ' does not exist or is not writable.');
 				}
 
-				$data = base64_decode(require __DIR__ . '/NoImageSource.php');
+				$data = base64_decode(require __DIR__ . '/NoImageSource.php', true);
 				$_image = NetteImage::fromString($data);
 				$_image->save($new_path, $script->quality ?: $this->quality);
 			}
@@ -328,6 +297,15 @@ class ImageStorage
 		return [$script, $file];
 	}
 
+	public function setFriendlyUrl(bool $friendly_url = true): void
+	{
+		$this->friendly_url = $friendly_url;
+	}
+
+	private static function fixName(string $name): string
+	{
+		return Strings::webalize($name, '._');
+	}
 
 	/**
 	 * @return string[]
@@ -357,11 +335,6 @@ class ImageStorage
 		$identifier = implode('/', [$namespace, $prefix, $name . $extension]);
 
 		return [$path, $identifier];
-	}
-
-	public function setFriendlyUrl(bool $friendly_url = true): void
-	{
-		$this->friendly_url = $friendly_url;
 	}
 
 }

@@ -3,9 +3,9 @@
 namespace Contributte\ImageStorage\DI;
 
 use Contributte\ImageStorage\ImageStorage;
-use Nette;
-use Latte;
+use Contributte\ImageStorage\Latte\LatteExtension;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Definitions\FactoryDefinition;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 
@@ -30,7 +30,7 @@ class ImageStorageExtension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$this->config->orig_path =  $this->config->orig_path ?? $this->config->data_path;
+		$this->config->orig_path ??= $this->config->data_path;
 		$config = (array) $this->config;
 		$builder->addDefinition($this->prefix('storage'))
 			->setType(ImageStorage::class)
@@ -38,20 +38,14 @@ class ImageStorageExtension extends CompilerExtension
 			->setArguments($config);
 	}
 
-
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 
-		/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
 		$latteFactory = $builder->getDefinition('latte.latteFactory');
-		assert($latteFactory instanceof Nette\DI\Definitions\FactoryDefinition);
-		if (version_compare(Latte\Engine::VERSION, '3', '<')) {
-			$latteFactory->getResultDefinition()
-				->addSetup('Contributte\ImageStorage\Macros\Macros::install(?->getCompiler())', ['@self']);
-		} else {
-			$latteFactory->getResultDefinition()->addSetup('addExtension', [new \Contributte\ImageStorage\Latte\LatteExtension]);
-		}
+		assert($latteFactory instanceof FactoryDefinition);
+
+		$latteFactory->getResultDefinition()->addSetup('addExtension', [new LatteExtension()]);
 	}
 
 }

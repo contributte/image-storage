@@ -16,8 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 final class ImageStorageTest extends TestCase
 {
 
-	/** @var ImageStorage */
-	private $storage;
+	private ImageStorage $storage;
 
 	public function setUp(): void
 	{
@@ -98,7 +97,6 @@ final class ImageStorageTest extends TestCase
 		Assert::truthy(file_exists($originalImage));
 	}
 
-
 	public function testUpload(): void
 	{
 		$files = __DIR__ . '/__files__/files';
@@ -128,7 +126,6 @@ final class ImageStorageTest extends TestCase
 		Assert::truthy(file_exists($savedImage));
 	}
 
-
 	public function testSaveContent(): void
 	{
 		$imageFileName = 'content.jpg';
@@ -155,12 +152,10 @@ final class ImageStorageTest extends TestCase
 		Assert::truthy(file_exists($savedImageCopy));
 	}
 
-
 	private function getPrefixFromContent(string $imageContent): string
 	{
 		return substr(sha1($imageContent), 0, 2);
 	}
-
 
 	/**
 	 * @throws Exception

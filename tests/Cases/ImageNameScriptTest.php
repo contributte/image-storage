@@ -41,7 +41,6 @@ final class ImageNameScriptTest extends TestCase
 		Assert::same($s->crop, [100, 150, 100, 100]);
 	}
 
-
 	public function testFromIdentifier(): void
 	{
 		$s = ImageNameScript::fromIdentifier('images/49/kitty.jpg');
