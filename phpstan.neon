@@ -1,29 +1,18 @@
 includes:
-	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
-	- vendor/phpstan/phpstan-nette/extension.neon
-	- vendor/phpstan/phpstan-nette/rules.neon
-	#- vendor/phpstan/phpstan-strict-rules/rules.neon
+	- vendor/contributte/phpstan/phpstan.neon
 
 parameters:
-	ignoreErrors:
-		-
-			message: '~^Parameter #1 \$pattern of function preg_match expects string, string\|null given\.$~'
-			path: '*/src/ImageNameScript.php'
-			count: 1
-		-
-			message: '~^Parameter #1 \$pattern of function preg_match expects string, string\|null given\.$~'
-			path: '*/src/ImageStorage.php'
-			count: 1
-		-
-			message: '~^Right side of && is always true\.$~'
-			path: '*/src/ImageStorage.php'
-			count: 1
-		-
-			message: '~^Method Contributte\\ImageStorage\\ImageStorage::fromIdentifier\(\) should return Contributte\\ImageStorage\\Image but returns array<int, Contributte\\ImageStorage\\ImageNameScript\|string>\|Contributte\\ImageStorage\\Image\.$~'
-			path: '*/src/ImageStorage.php'
-			count: 1
+	level: 9
+	phpVersion: 80100
 
-		-
-			message: '#Cannot use array destructuring on array<int, Contributte\\ImageStorage\\ImageNameScript|string>|Contributte\\ImageStorage\\Image.#'
-			path: '*/src/ImageStorage.php'
-			count: 2
+	scanDirectories:
+		- src
+
+	fileExtensions:
+		- php
+
+	paths:
+		- src
+		- .docs
+
+	ignoreErrors:
