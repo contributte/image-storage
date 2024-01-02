@@ -12,7 +12,7 @@ class LatteExtension extends Extension
 {
 
 	/**
-	 * @return array<string, callable>
+	 * @return array<mixed>
 	 */
 	public function getTags(): array
 	{

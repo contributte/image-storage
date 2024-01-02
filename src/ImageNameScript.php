@@ -58,7 +58,7 @@ class ImageNameScript
 		$script->name = $matches[3];
 		$script->size = [(int) $matches[5], (int) $matches[6]];
 		$script->flag = $matches[12];
-		$script->quality = $matches[14];
+		$script->quality = intval($matches[14]);
 		$script->extension = $matches[15];
 
 		if ($matches[8] && $matches[9] && $matches[10] && $matches[11]) {

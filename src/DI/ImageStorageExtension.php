@@ -8,7 +8,11 @@ use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\FactoryDefinition;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
+use stdClass;
 
+/**
+ * @method stdClass getConfig()
+ */
 class ImageStorageExtension extends CompilerExtension
 {
 
@@ -30,12 +34,13 @@ class ImageStorageExtension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$this->config->orig_path ??= $this->config->data_path;
-		$config = (array) $this->config;
+		$config = $this->getConfig();
+		$config->orig_path ??= $config->data_path;
+
 		$builder->addDefinition($this->prefix('storage'))
 			->setType(ImageStorage::class)
 			->setFactory(ImageStorage::class)
-			->setArguments($config);
+			->setArguments((array) $config);
 	}
 
 	public function beforeCompile(): void
