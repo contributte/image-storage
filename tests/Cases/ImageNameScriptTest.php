@@ -3,12 +3,12 @@
 namespace Tests\Cases;
 
 use Contributte\ImageStorage\ImageNameScript;
-use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use Tester\Assert;
+use Tester\TestCase;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ImageNameScriptTest extends BaseTestCase
+final class ImageNameScriptTest extends TestCase
 {
 
 	public function testFromName(): void
@@ -20,7 +20,7 @@ final class ImageNameScriptTest extends BaseTestCase
 		Assert::same($s->prefix, '49');
 		Assert::same($s->name, 'kitty');
 		Assert::same($s->flag, 'fill');
-		Assert::same($s->quality, '100');
+		Assert::same($s->quality, 100);
 		Assert::same($s->size, [100, 200]);
 		Assert::same($s->extension, 'jpg');
 		Assert::same($s->crop, []);
@@ -32,7 +32,7 @@ final class ImageNameScriptTest extends BaseTestCase
 		Assert::same($s->prefix, '49');
 		Assert::same($s->name, 'kitty');
 		Assert::same($s->flag, 'fill');
-		Assert::same($s->quality, '100');
+		Assert::same($s->quality, 100);
 		Assert::same($s->size, [100, 200]);
 		Assert::same($s->extension, 'jpg');
 		Assert::same($s->crop, []);
@@ -56,6 +56,4 @@ final class ImageNameScriptTest extends BaseTestCase
 
 }
 
-
-$test_case = new ImageNameScriptTest();
-$test_case->run();
+(new ImageNameScriptTest())->run();

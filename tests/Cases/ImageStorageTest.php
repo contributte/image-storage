@@ -6,14 +6,14 @@ use Contributte\ImageStorage\ImageStorage;
 use Exception;
 use Nette\Http\FileUpload;
 use Nette\Utils\Image;
-use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Tester\Assert;
+use Tester\TestCase;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ImageStorageTest extends BaseTestCase
+final class ImageStorageTest extends TestCase
 {
 
 	/** @var ImageStorage */
@@ -22,8 +22,9 @@ final class ImageStorageTest extends BaseTestCase
 	public function setUp(): void
 	{
 		$this->storage = new ImageStorage(
-			__DIR__ . '/../data',
+			__DIR__ . '/__files__',
 			'data',
+			__DIR__ . '/__files__',
 			'sha1_file',
 			'sha1',
 			2,
@@ -33,10 +34,9 @@ final class ImageStorageTest extends BaseTestCase
 		);
 	}
 
-
 	public function tearDown(): void
 	{
-		$path = __DIR__ . '/../data/images';
+		$path = __DIR__ . '/__files__/images';
 
 		if (!file_exists($path)) {
 			return;
@@ -54,10 +54,9 @@ final class ImageStorageTest extends BaseTestCase
 		}
 	}
 
-
 	public function testDelete(): void
 	{
-		$files = __DIR__ . '/../data/files';
+		$files = __DIR__ . '/__files__/files';
 		@mkdir($files . '/49', 0777, true);
 
 		$file_array = [
@@ -102,7 +101,7 @@ final class ImageStorageTest extends BaseTestCase
 
 	public function testUpload(): void
 	{
-		$files = __DIR__ . '/../data/files';
+		$files = __DIR__ . '/__files__/files';
 		$tempImagePath = $files . '/tmp.jpg';
 
 		$imageContent = Image::fromBlank(1, 1)->toString();
@@ -133,7 +132,7 @@ final class ImageStorageTest extends BaseTestCase
 	public function testSaveContent(): void
 	{
 		$imageFileName = 'content.jpg';
-		$files = __DIR__ . '/../data/files';
+		$files = __DIR__ . '/__files__/files';
 
 		$imageContent = Image::fromBlank(1, 1)->toString();
 
@@ -177,6 +176,4 @@ final class ImageStorageTest extends BaseTestCase
 
 }
 
-
-$test_case = new ImageStorageTest();
-$test_case->run();
+(new ImageStorageTest())->run();

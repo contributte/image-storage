@@ -3,12 +3,12 @@
 namespace Tests\Cases;
 
 use Contributte\ImageStorage\Image;
-use Ninjify\Nunjuck\TestCase\BaseTestCase;
 use Tester\Assert;
+use Tester\TestCase;
 
 require __DIR__ . '/../bootstrap.php';
 
-final class ImageTest extends BaseTestCase
+final class ImageTest extends TestCase
 {
 
 	public function testGetPath(): void
