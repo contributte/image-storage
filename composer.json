@@ -41,13 +41,10 @@
 		"latte/latte": "^3.0.12"
 	},
 	"require-dev": {
-		"ninjify/qa": "^0.12",
-		"ninjify/nunjuck": "^0.4.0",
-		"phpstan/phpstan": "^1.0",
-		"phpstan/phpstan-deprecation-rules": "^1.0",
-		"phpstan/phpstan-nette": "^1.0",
-		"phpstan/phpstan-strict-rules": "^1.0",
-		"tracy/tracy": "^2.6"
+    "contributte/qa": "^0.4",
+    "contributte/tester": "^0.3",
+    "contributte/phpstan": "^0.1",
+		"tracy/tracy": "^2.10.5"
 	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
