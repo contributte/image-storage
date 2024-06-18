@@ -2,7 +2,7 @@
 
 namespace Contributte\ImageStorage;
 
-use Nette\Application\UI\ITemplate;
+use Nette\Application\UI\Template;
 
 //phpcs:disable SlevomatCodingStandard.Classes.SuperfluousTraitNaming.SuperfluousSuffix
 
@@ -16,7 +16,7 @@ trait ImageStoragePresenterTrait
 		$this->imageStorage = $imageStorage;
 	}
 
-	public function createTemplate(): ITemplate
+	public function createTemplate(?string $class = null): Template
 	{
 		$template = parent::createTemplate();
 
