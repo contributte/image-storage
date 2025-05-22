@@ -208,6 +208,7 @@ class ImageStorage
 		$script->setCrop($crop);
 		$script->setFlag($flag);
 		$script->setQuality($quality);
+		$script->setExtension($args[4] ?? $script->extension);
 
 		$identifier = $script->getIdentifier();
 		$data_file = implode('/', [$this->data_path, $identifier]);
