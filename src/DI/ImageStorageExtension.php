@@ -28,6 +28,7 @@ class ImageStorageExtension extends CompilerExtension
 			'default_transform' => Expect::string('fit'),
 			'noimage_identifier' => Expect::string('noimage/03/no-image.png'),
 			'friendly_url' => Expect::bool(false),
+			'basePath' => Expect::string(''),
 		]);
 	}
 

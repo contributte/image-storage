@@ -35,6 +35,24 @@ final class ImageTest extends TestCase
 		Assert::equal('data/images/namespace/47/img.jpg', $image->createLink());
 	}
 
+	public function testCreateLinkWithBasePath(): void
+	{
+		$image = new Image(false, 'data', '', 'namespace/47/img.jpg', '/my-app');
+		Assert::equal('/my-app/data/namespace/47/img.jpg', $image->createLink());
+	}
+
+	public function testCreateLinkWithBasePathNested(): void
+	{
+		$image = new Image(false, 'data/images', '', 'namespace/47/img.jpg', '/my-app');
+		Assert::equal('/my-app/data/images/namespace/47/img.jpg', $image->createLink());
+	}
+
+	public function testCreateLinkWithEmptyBasePath(): void
+	{
+		$image = new Image(false, 'data', '', 'namespace/47/img.jpg', '');
+		Assert::equal('data/namespace/47/img.jpg', $image->createLink());
+	}
+
 }
 
 (new ImageTest())->run();

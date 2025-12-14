@@ -38,6 +38,8 @@ class ImageStorage
 
 	private bool $friendly_url;
 
+	private string $basePath;
+
 	private int $mask = 0775;
 
 	/** @var int[] */
@@ -62,7 +64,8 @@ class ImageStorage
 		int $quality,
 		string $default_transform,
 		string $noimage_identifier,
-		bool $friendly_url
+		bool $friendly_url,
+		string $basePath = ''
 	)
 	{
 		$this->data_path = $data_path;
@@ -74,6 +77,7 @@ class ImageStorage
 		$this->default_transform = $default_transform;
 		$this->noimage_identifier = $noimage_identifier;
 		$this->friendly_url = $friendly_url;
+		$this->basePath = $basePath;
 	}
 
 	public function delete(mixed $arg, bool $onlyChangedImages = false): void
@@ -125,7 +129,7 @@ class ImageStorage
 
 		$upload->move($path);
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, [
 			'sha' => $checksum,
 			'name' => self::fixName($upload->getUntrustedName()),
 		]);
@@ -145,7 +149,7 @@ class ImageStorage
 
 		file_put_contents($path, $content, LOCK_EX);
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, [
 			'sha' => $checksum,
 			'name' => self::fixName($name),
 		]);
@@ -175,7 +179,7 @@ class ImageStorage
 				@copy($orig_file, $data_file);
 			}
 
-			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath);
 		}
 
 		preg_match('/(\d+)?x(\d+)?(crop(\d+)x(\d+)x(\d+)x(\d+))?/', $args[1], $matches);
@@ -248,7 +252,7 @@ class ImageStorage
 			);
 		}
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, ['script' => $script]);
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, ['script' => $script]);
 	}
 
 	/**
@@ -282,7 +286,7 @@ class ImageStorage
 			}
 
 			if ($return_image) {
-				return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier);
+				return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath);
 			}
 
 			$script = ImageNameScript::fromIdentifier($identifier);
@@ -291,7 +295,7 @@ class ImageStorage
 		}
 
 		if ($return_image) {
-			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $this->noimage_identifier);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $this->noimage_identifier, $this->basePath);
 		}
 
 		return [$script, $file];
@@ -300,6 +304,11 @@ class ImageStorage
 	public function setFriendlyUrl(bool $friendly_url = true): void
 	{
 		$this->friendly_url = $friendly_url;
+	}
+
+	public function setBasePath(string $basePath): void
+	{
+		$this->basePath = $basePath;
 	}
 
 	private static function fixName(string $name): string

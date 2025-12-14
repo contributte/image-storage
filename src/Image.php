@@ -24,15 +24,18 @@ class Image
 
 	private bool $friendly_url = false;
 
+	private string $basePath = '';
+
 	/**
 	 * @param bool[]|string[]|ImageNameScript[]|null[] $props
 	 */
-	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, array $props = [])
+	public function __construct(bool $friendly_url, string $data_dir, string $data_path, string $identifier, string $basePath = '', array $props = [])
 	{
 		$this->data_dir = $data_dir;
 		$this->data_path = $data_path;
 		$this->identifier = $identifier;
 		$this->friendly_url = $friendly_url;
+		$this->basePath = $basePath;
 
 		if (stripos($this->identifier, '/') === 0) {
 			$this->identifier = substr($this->identifier, 1);
@@ -67,11 +70,17 @@ class Image
 
 	public function createLink(): string
 	{
+		$parts = $this->basePath !== '' ? [$this->basePath] : [];
+
 		if ($this->friendly_url) {
-			return implode('/', [$this->data_dir, $this->getScript()->toQuery()]);
+			$parts[] = $this->data_dir;
+			$parts[] = $this->getScript()->toQuery();
+		} else {
+			$parts[] = $this->data_dir;
+			$parts[] = $this->identifier;
 		}
 
-		return implode('/', [$this->data_dir, $this->identifier]);
+		return implode('/', $parts);
 	}
 
 	public function getScript(): ImageNameScript
