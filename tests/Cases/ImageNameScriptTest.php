@@ -53,6 +53,41 @@ final class ImageNameScriptTest extends TestCase
 		Assert::same($s->toQuery(), 'images/49/2x2.exact.q2/kitty.jpg?_image_storage');
 	}
 
+	/**
+	 * Test that noimage paths with longer prefix work (issue #43)
+	 */
+	public function testFromNameWithLongerPrefix(): void
+	{
+		// Test noimage path with "noimage" as prefix (7 characters)
+		$s = ImageNameScript::fromName('images/noimage/no-image.png');
+
+		Assert::same($s->original, 'images/noimage/no-image.png');
+		Assert::same($s->namespace, 'images');
+		Assert::same($s->prefix, 'noimage');
+		Assert::same($s->name, 'no-image');
+		Assert::same($s->extension, 'png');
+		Assert::same($s->size, [0, 0]);
+		Assert::same($s->crop, []);
+
+		// Test noimage path without namespace
+		$s = ImageNameScript::fromName('noimage/placeholder/image.jpg');
+
+		Assert::same($s->original, 'noimage/placeholder/image.jpg');
+		Assert::same($s->namespace, 'noimage');
+		Assert::same($s->prefix, 'placeholder');
+		Assert::same($s->name, 'image');
+		Assert::same($s->extension, 'jpg');
+
+		// Test that 2-character prefix still works
+		$s = ImageNameScript::fromName('noimage/03/no-image.png');
+
+		Assert::same($s->original, 'noimage/03/no-image.png');
+		Assert::same($s->namespace, 'noimage');
+		Assert::same($s->prefix, '03');
+		Assert::same($s->name, 'no-image');
+		Assert::same($s->extension, 'png');
+	}
+
 }
 
 (new ImageNameScriptTest())->run();
