@@ -6,6 +6,7 @@ use Contributte\ImageStorage\ImageStorage;
 use Contributte\ImageStorage\Latte\LatteExtension;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\FactoryDefinition;
+use Nette\DI\Definitions\Statement;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use stdClass;
@@ -28,7 +29,6 @@ class ImageStorageExtension extends CompilerExtension
 			'default_transform' => Expect::string('fit'),
 			'noimage_identifier' => Expect::string('noimage/03/no-image.png'),
 			'friendly_url' => Expect::bool(false),
-			'basePath' => Expect::string(''),
 		]);
 	}
 
@@ -38,10 +38,13 @@ class ImageStorageExtension extends CompilerExtension
 		$config = $this->getConfig();
 		$config->orig_path ??= $config->data_path;
 
+		$arguments = (array) $config;
+		$arguments['httpRequest'] = new Statement('@Nette\Http\IRequest');
+
 		$builder->addDefinition($this->prefix('storage'))
 			->setType(ImageStorage::class)
 			->setFactory(ImageStorage::class)
-			->setArguments((array) $config);
+			->setArguments($arguments);
 	}
 
 	public function beforeCompile(): void

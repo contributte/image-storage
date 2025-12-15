@@ -7,6 +7,7 @@ use Contributte\ImageStorage\Exception\ImageResizeException;
 use Contributte\ImageStorage\Exception\ImageStorageException;
 use DirectoryIterator;
 use Nette\Http\FileUpload;
+use Nette\Http\IRequest;
 use Nette\SmartObject;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Image as NetteImage;
@@ -38,7 +39,7 @@ class ImageStorage
 
 	private bool $friendly_url;
 
-	private string $basePath;
+	private ?IRequest $httpRequest;
 
 	private int $mask = 0775;
 
@@ -65,7 +66,7 @@ class ImageStorage
 		string $default_transform,
 		string $noimage_identifier,
 		bool $friendly_url,
-		string $basePath = ''
+		?IRequest $httpRequest = null
 	)
 	{
 		$this->data_path = $data_path;
@@ -77,7 +78,7 @@ class ImageStorage
 		$this->default_transform = $default_transform;
 		$this->noimage_identifier = $noimage_identifier;
 		$this->friendly_url = $friendly_url;
-		$this->basePath = $basePath;
+		$this->httpRequest = $httpRequest;
 	}
 
 	public function delete(mixed $arg, bool $onlyChangedImages = false): void
@@ -129,7 +130,7 @@ class ImageStorage
 
 		$upload->move($path);
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->getBasePath(), [
 			'sha' => $checksum,
 			'name' => self::fixName($upload->getUntrustedName()),
 		]);
@@ -149,7 +150,7 @@ class ImageStorage
 
 		file_put_contents($path, $content, LOCK_EX);
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, [
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->getBasePath(), [
 			'sha' => $checksum,
 			'name' => self::fixName($name),
 		]);
@@ -179,7 +180,7 @@ class ImageStorage
 				@copy($orig_file, $data_file);
 			}
 
-			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->getBasePath());
 		}
 
 		preg_match('/(\d+)?x(\d+)?(crop(\d+)x(\d+)x(\d+)x(\d+))?/', $args[1], $matches);
@@ -252,7 +253,7 @@ class ImageStorage
 			);
 		}
 
-		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath, ['script' => $script]);
+		return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->getBasePath(), ['script' => $script]);
 	}
 
 	/**
@@ -286,7 +287,7 @@ class ImageStorage
 			}
 
 			if ($return_image) {
-				return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->basePath);
+				return new Image($this->friendly_url, $this->data_dir, $this->data_path, $identifier, $this->getBasePath());
 			}
 
 			$script = ImageNameScript::fromIdentifier($identifier);
@@ -295,7 +296,7 @@ class ImageStorage
 		}
 
 		if ($return_image) {
-			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $this->noimage_identifier, $this->basePath);
+			return new Image($this->friendly_url, $this->data_dir, $this->data_path, $this->noimage_identifier, $this->getBasePath());
 		}
 
 		return [$script, $file];
@@ -306,9 +307,13 @@ class ImageStorage
 		$this->friendly_url = $friendly_url;
 	}
 
-	public function setBasePath(string $basePath): void
+	public function getBasePath(): string
 	{
-		$this->basePath = $basePath;
+		if ($this->httpRequest === null) {
+			return '';
+		}
+
+		return rtrim($this->httpRequest->getUrl()->getBasePath(), '/');
 	}
 
 	private static function fixName(string $name): string
