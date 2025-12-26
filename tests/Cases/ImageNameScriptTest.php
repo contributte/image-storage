@@ -48,9 +48,10 @@ final class ImageNameScriptTest extends TestCase
 		$s->setQuality(2);
 		$s->setSize([2, 2]);
 		$s->setFlag('exact');
+		$s->setExtension('png');
 
-		Assert::same($s->getIdentifier(), 'images/49/kitty.2x2.exact.q2.jpg');
-		Assert::same($s->toQuery(), 'images/49/2x2.exact.q2/kitty.jpg?_image_storage');
+		Assert::same($s->getIdentifier(), 'images/49/kitty.2x2.exact.q2.png');
+		Assert::same($s->toQuery(), 'images/49/2x2.exact.q2/kitty.png?_image_storage');
 	}
 
 	/**

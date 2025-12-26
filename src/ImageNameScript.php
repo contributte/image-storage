@@ -94,6 +94,11 @@ class ImageNameScript
 		$this->quality = $quality;
 	}
 
+	public function setExtension(string $extension): void
+	{
+		$this->extension = $extension;
+	}
+
 	public function getIdentifier(): string
 	{
 		$identifier = implode('/', [$this->namespace, $this->prefix, $this->name]);

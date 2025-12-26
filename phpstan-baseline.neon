@@ -61,6 +61,31 @@ parameters:
 			path: src/ImageStorage.php
 
 		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: "#^Offset 1 does not exist on array\\{0\\?\\: string, 1\\?\\: ''\\|numeric\\-string, 2\\?\\: ''\\|numeric\\-string, 3\\?\\: string, 4\\?\\: ''\\|numeric\\-string, 5\\?\\: ''\\|numeric\\-string, 6\\?\\: ''\\|numeric\\-string, 7\\?\\: numeric\\-string\\}\\.$#"
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: "#^Offset 1 does not exist on array\\{0\\?\\: string, 1\\?\\: string, 2\\: non\\-falsy\\-string\\}\\.$#"
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: "#^Offset 2 does not exist on array\\{0\\?\\: string, 1\\?\\: ''\\|numeric\\-string, 2\\?\\: ''\\|numeric\\-string, 3\\?\\: string, 4\\?\\: ''\\|numeric\\-string, 5\\?\\: ''\\|numeric\\-string, 6\\?\\: ''\\|numeric\\-string, 7\\?\\: numeric\\-string\\}\\.$#"
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: "#^Offset 2 does not exist on array\\{0\\?\\: string, 1\\?\\: string, 2\\?\\: non\\-falsy\\-string\\}\\.$#"
+			count: 1
+			path: src/ImageStorage.php
+
+		-
 			message: "#^Only booleans are allowed in &&, int given on the right side\\.$#"
 			count: 1
 			path: src/ImageStorage.php

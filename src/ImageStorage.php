@@ -213,6 +213,7 @@ class ImageStorage
 		// Get quality: use override if provided, otherwise get format-specific default
 		$quality = $qualityOverride ?? $this->getQualityForFormat($script->extension);
 		$script->setQuality($quality);
+		$script->setExtension($args[4] ?? $script->extension);
 
 		$identifier = $script->getIdentifier();
 		$data_file = implode('/', [$this->data_path, $identifier]);
