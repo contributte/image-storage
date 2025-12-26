@@ -24,6 +24,8 @@ final class QualityConversionTest extends TestCase
 
 	private ReflectionMethod $getQualityMethod;
 
+	private ImageStorage $storage;
+
 	public function setUp(): void
 	{
 		$storage = new ImageStorage(
@@ -40,11 +42,8 @@ final class QualityConversionTest extends TestCase
 
 		// Access private method for testing
 		$this->getQualityMethod = new ReflectionMethod(ImageStorage::class, 'getQualityForFormat');
-		$this->getQualityMethod->setAccessible(true);
 		$this->storage = $storage;
 	}
-
-	private ImageStorage $storage;
 
 	public function testJpegQuality(): void
 	{
@@ -106,7 +105,6 @@ final class QualityConversionTest extends TestCase
 		);
 
 		$method = new ReflectionMethod(ImageStorage::class, 'getQualityForFormat');
-		$method->setAccessible(true);
 
 		Assert::same(95, $method->invoke($storage, 'jpg'));
 		Assert::same(2, $method->invoke($storage, 'png'));

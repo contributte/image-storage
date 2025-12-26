@@ -109,7 +109,7 @@ final class ImageStorageTest extends TestCase
 		$upload = new FileUpload([
 			'name' => 'upload.jpg',
 			'type' => 'image/jpg',
-			'size' => '20',
+			'size' => 20,
 			'tmp_name' => $tempImagePath,
 			'error' => 0,
 		]);
