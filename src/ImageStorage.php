@@ -30,7 +30,8 @@ class ImageStorage
 	/** @var callable(string): string */
 	private $algorithm_content;
 
-	private int $quality;
+	/** @var array<string, int|null> */
+	private array $quality;
 
 	private string $default_transform;
 
@@ -52,6 +53,7 @@ class ImageStorage
 	/**
 	 * @param callable(string): string $algorithm_file
 	 * @param callable(string): string $algorithm_content
+	 * @param array<string, int|null> $quality Format-specific quality settings (jpeg, png, webp, avif, gif)
 	 */
 	public function __construct(
 		string $data_path,
@@ -59,7 +61,7 @@ class ImageStorage
 		string $orig_path,
 		callable $algorithm_file,
 		callable $algorithm_content,
-		int $quality,
+		array $quality,
 		string $default_transform,
 		string $noimage_identifier,
 		bool $friendly_url
@@ -158,7 +160,7 @@ class ImageStorage
 		}
 
 		$identifier = $args[0];
-		$quality = $args[3] ?? $this->quality;
+		$qualityOverride = $args[3] ?? null;
 		$flag = $args[2] ?? $this->default_transform;
 
 		$orig_file = implode('/', [$this->orig_path, $identifier]);
@@ -207,6 +209,9 @@ class ImageStorage
 		$script->setSize($size);
 		$script->setCrop($crop);
 		$script->setFlag($flag);
+
+		// Get quality: use override if provided, otherwise get format-specific default
+		$quality = $qualityOverride ?? $this->getQualityForFormat($script->extension);
 		$script->setQuality($quality);
 
 		$identifier = $script->getIdentifier();
@@ -278,7 +283,8 @@ class ImageStorage
 
 				$data = base64_decode(require __DIR__ . '/NoImageSource.php', true);
 				$_image = NetteImage::fromString($data);
-				$_image->save($new_path, $script->quality ?: $this->quality);
+				$noImageQuality = $script->quality ?: $this->getQualityForFormat($script->extension);
+				$_image->save($new_path, $noImageQuality);
 			}
 
 			if ($return_image) {
@@ -305,6 +311,34 @@ class ImageStorage
 	private static function fixName(string $name): string
 	{
 		return Strings::webalize($name, '._');
+	}
+
+	/**
+	 * Get quality setting for the given image format.
+	 *
+	 * Returns the configured quality for the format:
+	 * - JPEG: 0-100 (default 85)
+	 * - PNG: 0-9 compression level (default 6)
+	 * - WEBP: 0-100 (default 80)
+	 * - AVIF: 0-100 (default 30)
+	 * - GIF: null (not applicable)
+	 */
+	private function getQualityForFormat(string $extension): ?int
+	{
+		$extension = strtolower($extension);
+
+		// Map jpg to jpeg for config lookup
+		if ($extension === 'jpg') {
+			$extension = 'jpeg';
+		}
+
+		// Check if format exists in config (including null values like gif)
+		if (array_key_exists($extension, $this->quality)) {
+			return $this->quality[$extension];
+		}
+
+		// Fall back to jpeg quality for unknown formats
+		return $this->quality['jpeg'] ?? 85;
 	}
 
 	/**

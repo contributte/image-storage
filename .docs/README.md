@@ -10,6 +10,7 @@ Image storage for Nette framework.
 - [Images - how to work with them](#images)
 	- [Storing image](#storing-image)
 	- [Transforming image](#transforming-image-resizing-cropping)
+	- [Quality settings](#quality-settings)
 	- [Deleting image](#deleting-image)
 	- [Friendly URL](#friendly-url)
 
@@ -29,7 +30,12 @@ imageStorage:
 	orig_path: %wwwDir%/../data                         # Original images dir (if is null, will be same as data_path)
 	algorithm_file: sha1_file                           # Algorithm to take image prefix directory from
 	algorithm_content: sha1                             # ...
-	quality: 85                                         # Default quality when cropping
+	quality:                                            # Format-specific quality settings
+		jpeg: 85                                        # JPEG quality (0-100, higher = better)
+		png: 6                                          # PNG compression level (0-9, lower = less compression)
+		webp: 80                                        # WEBP quality (0-100)
+		avif: 30                                        # AVIF quality (0-100)
+		gif: null                                       # GIF (not applicable)
 	default_transform: fit                              # Default crop transformation
 	noimage_identifier: images/noimage/no-image.png     # No-image image
 	friendly_url: false                                 # Create friendly URLs?
@@ -106,6 +112,34 @@ In [Latte](https://latte.nette.org/) template:
 {var $identifier = 'images/ed/kitty.jpg'}
 {img $identifier}
 ```
+
+## Quality settings
+
+Each image format uses its native quality/compression scale:
+
+| Format | Range | Default | Description |
+|--------|-------|---------|-------------|
+| JPEG   | 0-100 | 85      | Higher value = better quality, larger file |
+| PNG    | 0-9   | 6       | Compression level (0 = no compression, 9 = max compression) |
+| WEBP   | 0-100 | 80      | Higher value = better quality, larger file |
+| AVIF   | 0-100 | 30      | Higher value = better quality, larger file |
+| GIF    | null  | null    | Quality not applicable for GIF format |
+
+You can override the default quality when transforming images:
+
+```php
+<?php declare(strict_types = 1);
+
+// Using default quality from config
+$img = $this->imageStorage->fromIdentifier(['images/ed/kitty.jpg', '100x100']);
+
+// Override with custom quality (4th parameter)
+$img = $this->imageStorage->fromIdentifier(['images/ed/kitty.jpg', '100x100', 'fit', 95]);
+```
+
+> **Note:** PNG uses compression level, not quality. A lower value means less compression
+> (larger file, faster encoding), while a higher value means more compression (smaller file,
+> slower encoding). PNG compression is always lossless regardless of the level.
 
 ## Deleting image
 
