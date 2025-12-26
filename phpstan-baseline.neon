@@ -1,146 +1,211 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#"
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
 			count: 1
 			path: src/Image.php
 
 		-
-			message: "#^Variable property access on \\$this\\(Contributte\\\\ImageStorage\\\\Image\\)\\.$#"
+			message: '#^Variable property access on \$this\(Contributte\\ImageStorage\\Image\)\.$#'
+			identifier: property.dynamicName
 			count: 1
 			path: src/Image.php
 
 		-
-			message: "#^Only booleans are allowed in &&, array\\<int\\> given on the left side\\.$#"
+			message: '#^Only booleans are allowed in &&, array\<int\> given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
 			count: 1
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in &&, int given on the right side\\.$#"
+			message: '#^Only booleans are allowed in &&, int given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
 			count: 2
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in &&, string given on the left side\\.$#"
+			message: '#^Only booleans are allowed in &&, string given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
 			count: 1
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in &&, string given on the right side\\.$#"
+			message: '#^Only booleans are allowed in &&, string given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
 			count: 3
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, array\\<int\\> given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, array\<int\> given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, int given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, int given\.$#'
+			identifier: if.condNotBoolean
 			count: 2
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Only booleans are allowed in an if condition, int\\<0, max\\> given\\.$#"
+			message: '#^Only booleans are allowed in an if condition, int\<0, max\> given\.$#'
+			identifier: if.condNotBoolean
 			count: 2
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Parameter \\#1 \\$pattern of function preg_match expects string, string\\|null given\\.$#"
+			message: '#^Parameter \#1 \$pattern of function preg_match expects string, string\|null given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/ImageNameScript.php
 
 		-
-			message: "#^Cannot use array destructuring on array\\<int, Contributte\\\\ImageStorage\\\\ImageNameScript\\|string\\>\\|Contributte\\\\ImageStorage\\\\Image\\.$#"
+			message: '#^Cannot use array destructuring on Contributte\\ImageStorage\\Image\|list\<Contributte\\ImageStorage\\ImageNameScript\|string\>\.$#'
+			identifier: offsetAccess.nonArray
 			count: 2
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Method Contributte\\\\ImageStorage\\\\ImageStorage\\:\\:fromIdentifier\\(\\) should return Contributte\\\\ImageStorage\\\\Image but returns array\\<int, Contributte\\\\ImageStorage\\\\ImageNameScript\\|string\\>\\|Contributte\\\\ImageStorage\\\\Image\\.$#"
+			message: '#^Method Contributte\\ImageStorage\\ImageStorage\:\:fromIdentifier\(\) should return Contributte\\ImageStorage\\Image but returns Contributte\\ImageStorage\\Image\|list\<Contributte\\ImageStorage\\ImageNameScript\|string\>\.$#'
+			identifier: return.type
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Only booleans are allowed in &&, int given on the right side\\.$#"
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, int given\\.$#"
+			message: '#^Only booleans are allowed in &&, int given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 2
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, int\\|false given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, int\|false given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Only booleans are allowed in a negated boolean, string given\\.$#"
-			count: 1
-			path: src/ImageStorage.php
-
-		-
-			message: "#^Only booleans are allowed in a negated boolean, string\\|null given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 2
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Parameter \\#1 \\$name of static method Contributte\\\\ImageStorage\\\\ImageNameScript\\:\\:fromName\\(\\) expects string, mixed given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Parameter \\#1 \\$pattern of function preg_match expects string, string\\|null given\\.$#"
-			count: 1
-			path: src/ImageStorage.php
-
-		-
-			message: "#^Parameter \\#1 \\$s of static method Nette\\\\Utils\\\\Image\\:\\:fromString\\(\\) expects string, string\\|false given\\.$#"
-			count: 1
-			path: src/ImageStorage.php
-
-		-
-			message: "#^Parameter \\#3 \\$checksum of method Contributte\\\\ImageStorage\\\\ImageStorage\\:\\:getSavePath\\(\\) expects string, mixed given\\.$#"
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 2
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Parameter \\#3 \\$mode of method Nette\\\\Utils\\\\Image\\:\\:resize\\(\\) expects int\\<0, 15\\>, int given\\.$#"
+			message: '#^Parameter \#1 \$identifier of static method Contributte\\ImageStorage\\ImageNameScript\:\:fromIdentifier\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Parameter \\#5 \\$props of class Contributte\\\\ImageStorage\\\\Image constructor expects array\\<bool\\|Contributte\\\\ImageStorage\\\\ImageNameScript\\|string\\|null\\>, array\\<string, mixed\\> given\\.$#"
+			message: '#^Parameter \#1 \$name of static method Contributte\\ImageStorage\\ImageNameScript\:\:fromName\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Parameter \#1 \$pattern of function preg_match expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Parameter \#1 \$s of static method Nette\\Utils\\Image\:\:fromString\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Parameter \#2 \$quality of method Nette\\Utils\\Image\:\:save\(\) expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Parameter \#3 \$checksum of method Contributte\\ImageStorage\\ImageStorage\:\:getSavePath\(\) expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 2
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Right side of && is always true\\.$#"
+			message: '#^Parameter \#3 \$mode of method Nette\\Utils\\Image\:\:resize\(\) expects int\<0, 15\>, int given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Short ternary operator is not allowed\\. Use null coalesce operator if applicable or consider using long ternary\\.$#"
+			message: '#^Parameter \#4 \$identifier of class Contributte\\ImageStorage\\Image constructor expects string, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Undefined variable\\: \\$i$#"
+			message: '#^Parameter \#5 \$props of class Contributte\\ImageStorage\\Image constructor expects array\<bool\|Contributte\\ImageStorage\\ImageNameScript\|string\|null\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Variable \\$i might not be defined\\.$#"
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Variable \\$path might not be defined\\.$#"
+			message: '#^Undefined variable\: \$i$#'
+			identifier: variable.undefined
 			count: 1
 			path: src/ImageStorage.php
 
 		-
-			message: "#^Return type \\(array\\) of method Contributte\\\\ImageStorage\\\\Latte\\\\LatteExtension\\:\\:getTags\\(\\) should be covariant with return type \\(array\\<string, \\(callable\\(Latte\\\\Compiler\\\\Tag, Latte\\\\Compiler\\\\TemplateParser\\)\\: \\(Generator\\|Latte\\\\Compiler\\\\Node\\|void\\)\\)\\|stdClass\\>\\) of method Latte\\\\Extension\\:\\:getTags\\(\\)$#"
+			message: '#^Variable \$i might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Variable \$path might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: src/ImageStorage.php
+
+		-
+			message: '#^Trait Contributte\\ImageStorage\\ImageStoragePresenterTrait is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/ImageStoragePresenterTrait.php
+
+		-
+			message: '#^Return type \(array\<mixed\>\) of method Contributte\\ImageStorage\\Latte\\LatteExtension\:\:getTags\(\) should be covariant with return type \(array\<string, \(callable\(Latte\\Compiler\\Tag, Latte\\Compiler\\TemplateParser\)\: \(Generator\|Latte\\Compiler\\Node\|void\)\)\|stdClass\>\) of method Latte\\Extension\:\:getTags\(\)$#'
+			identifier: method.childReturnType
 			count: 1
 			path: src/Latte/LatteExtension.php

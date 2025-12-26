@@ -10,12 +10,8 @@
 		"resize",
 		"upload"
 	],
-	"license": [
-		"MIT"
-	],
-	"support": {
-		"issues": "https://github.com/contributte/image-storage/issues"
-	},
+	"license": "MIT",
+	"homepage": "https://github.com/contributte/image-storage",
 	"authors": [
 		{
 			"name": "Pavel Janda",
@@ -23,40 +19,40 @@
 		}
 	],
 	"require": {
-		"php": ">=8.1",
+		"php": ">=8.2",
+		"latte/latte": "^3.0.12",
 		"nette/application": "^3.1.14",
-		"nette/utils": "^4.0.3",
 		"nette/di": "^3.1.8",
 		"nette/http": "^3.2.3",
-		"latte/latte": "^3.0.12"
+		"nette/utils": "^4.0.3"
 	},
 	"require-dev": {
-    "contributte/qa": "^0.4",
-    "contributte/tester": "^0.3",
-    "contributte/phpstan": "^0.1",
+		"contributte/phpstan": "^0.2.0",
+		"contributte/qa": "^0.4.0",
+		"contributte/tester": "^0.3.0",
 		"tracy/tracy": "^2.10.5"
 	},
-  "autoload": {
-    "psr-4": {
-      "Contributte\\ImageStorage\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests"
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true,
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
-    }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "3.1.x-dev"
-    }
-  }
+	"autoload": {
+		"psr-4": {
+			"Contributte\\ImageStorage\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests"
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"config": {
+		"sort-packages": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "3.1.x-dev"
+		}
+	}
 }
