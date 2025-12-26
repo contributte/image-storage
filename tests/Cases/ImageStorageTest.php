@@ -26,7 +26,7 @@ final class ImageStorageTest extends TestCase
 			__DIR__ . '/__files__',
 			'sha1_file',
 			'sha1',
-			2,
+			['jpeg' => 2, 'png' => 2, 'webp' => 2, 'avif' => 2, 'gif' => null],
 			'fit',
 			'n/aa/s.jpg',
 			false

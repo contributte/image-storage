@@ -12,3 +12,4 @@
 /tests/**/*.html
 /tests/**/*.expected
 /tests/**/*.actual
+/tests/**/tmp.*
