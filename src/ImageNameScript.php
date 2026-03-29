@@ -3,6 +3,8 @@
 namespace Contributte\ImageStorage;
 
 use Nette\SmartObject;
+use function preg_match;
+use function preg_replace;
 
 class ImageNameScript
 {
@@ -49,10 +51,14 @@ class ImageNameScript
 	{
 		$pattern = preg_replace('/__file__/', '(.*)\/([^\/]+)\/(.*?)', self::PATTERN);
 		preg_match($pattern, $name, $matches);
-
+		if (empty($matches[0])) {
+			$pattern = preg_replace('/__file__/', '(.*)\/(.*?)', self::PATTERN);
+			preg_match($pattern, $name, $matches);
+			array_splice($matches, 2, 0, ['']);
+		}
 		$script = new self($matches[0]);
 
-		$script->original = $matches[1] . '/' . $matches[2] . '/' . $matches[3] . '.' . $matches[15];
+		$script->original = $matches[1] . '/' . ($matches[2] !== '' ? $matches[2] . '/' : '') . $matches[3] . '.' . $matches[15];
 		$script->namespace = $matches[1];
 		$script->prefix = $matches[2];
 		$script->name = $matches[3];

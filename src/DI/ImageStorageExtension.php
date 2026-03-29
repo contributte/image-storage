@@ -47,6 +47,9 @@ class ImageStorageExtension extends CompilerExtension
 			->setType(ImageStorage::class)
 			->setFactory(ImageStorage::class)
 			->setArguments((array) $config);
+
+		$builder->addDefinition($this->prefix('latteExtension'))
+		        ->setType(LatteExtension::class);
 	}
 
 	public function beforeCompile(): void
@@ -56,7 +59,7 @@ class ImageStorageExtension extends CompilerExtension
 		$latteFactory = $builder->getDefinition('latte.latteFactory');
 		assert($latteFactory instanceof FactoryDefinition);
 
-		$latteFactory->getResultDefinition()->addSetup('addExtension', [new LatteExtension()]);
+		$latteFactory->getResultDefinition()->addSetup('addExtension', [$this->prefix('@latteExtension')]);
 	}
 
 }

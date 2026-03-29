@@ -2,6 +2,7 @@
 
 namespace Contributte\ImageStorage\Latte;
 
+use Contributte\ImageStorage\ImageStorage;
 use Latte\Compiler\Node;
 use Latte\Compiler\Nodes\AuxiliaryNode;
 use Latte\Compiler\PrintContext;
@@ -10,6 +11,10 @@ use Latte\Extension;
 
 class LatteExtension extends Extension
 {
+
+	public function __construct(protected readonly ImageStorage $imageStorage)
+	{
+	}
 
 	/**
 	 * @return array<mixed>
@@ -32,7 +37,7 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo "<img src=\"" . $basePath . "/" . $_img->createLink() . "\">";', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo "<img src=\"" . $basePath . "/" . $_img->createLink() . "\">";', $args)
 		);
 	}
 
@@ -41,7 +46,7 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo "<img src=\"" . $baseUrl . "/" . $_img->createLink() . "\">";', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo "<img src=\"" . $baseUrl . "/" . $_img->createLink() . "\">";', $args)
 		);
 	}
 
@@ -50,7 +55,7 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo \' src="\' . $basePath . "/" . $_img->createLink() . \'"\';', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo \' src="\' . $basePath . "/" . $_img->createLink() . \'"\';', $args)
 		);
 	}
 
@@ -59,7 +64,7 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo \' src="\' . $baseUrl . "/" . $_img->createLink() . \'"\';', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo \' src="\' . $baseUrl . "/" . $_img->createLink() . \'"\';', $args)
 		);
 	}
 
@@ -68,7 +73,7 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo $basePath . "/" . $_img->createLink();', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo $basePath . "/" . $_img->createLink();', $args)
 		);
 	}
 
@@ -77,8 +82,15 @@ class LatteExtension extends Extension
 		$args = $tag->parser->parseArguments();
 
 		return new AuxiliaryNode(
-			fn (PrintContext $context) => $context->format('$_img = $imageStorage->fromIdentifier(%node); echo $baseUrl . "/" . $_img->createLink();', $args)
+			fn (PrintContext $context) => $context->format('$_img = $this->global->imageStorage->fromIdentifier(%node); echo $baseUrl . "/" . $_img->createLink();', $args)
 		);
+	}
+
+	public function getProviders(): array
+	{
+		return [
+			'imageStorage' => $this->imageStorage, // Register the provider
+		];
 	}
 
 }
