@@ -107,6 +107,8 @@ class ImageStorage
 		} else {
 			if (!$onlyChangedImages) {
 				unlink(implode('/', [$this->orig_path, $script->namespace, $script->prefix, $origFile]));
+			} else {
+				array_map('unlink', glob(implode('/', [$this->orig_path, $script->namespace, $script->prefix, $script->name . '.*.' . $script->extension])));
 			}
 
 			FileSystem::delete($dir);
