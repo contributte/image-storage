@@ -35,18 +35,6 @@ To install latest version of `contributte/image-storage` use [Composer](https://
 composer require contributte/image-storage
 ```
 
----
-
-## Contents
-
-- [Usage - how to register & configure](#usage)
-- [Images - how to work with them](#images)
-	- [Storing image](#storing-image)
-	- [Transforming image](#transforming-image-resizing-cropping)
-	- [Quality settings](#quality-settings)
-	- [Deleting image](#deleting-image)
-	- [Friendly URL](#friendly-url)
-
 ## Usage
 
 Register extension:
@@ -73,8 +61,6 @@ imageStorage:
 	noimage_identifier: images/noimage/no-image.png     # No-image image
 	friendly_url: false                                 # Create friendly URLs?
 ```
-
-## Images
 
 ## Storing image
 
